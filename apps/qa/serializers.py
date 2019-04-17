@@ -62,3 +62,31 @@ class NormalAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = NormalAnswers
         fields = '__all__'
+
+
+class SelectQuestionDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SelectQuestions
+        fields = '__all__'
+
+
+class SelectAnswerDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SelectAnswers
+        fields = '__all__'
+
+
+class NormalQuestionDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = NormalQuestions
+        fields = '__all__'
+
+
+class NormalAnswerDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = NormalAnswers
+        fields = '__all__'

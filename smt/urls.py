@@ -15,9 +15,11 @@ Including another URLconf
 """
 import xadmin
 
-from django.urls import path
+from django.urls import path, re_path
 from apps.users.views import UserCreateViewSet, UserDetailViewSet
-from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet, SelectAnswerCreateViewSet
+from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet,\
+    SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet,\
+    NormalQuestionsDetailViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -29,4 +31,8 @@ urlpatterns = [
     path('create/select/question/', SelectQuestionCreateViewSet.as_view()),
     path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),
     path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),
+    re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),
+    re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),
+    re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),
+    re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),
 ]
