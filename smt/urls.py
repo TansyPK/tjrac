@@ -17,7 +17,7 @@ import xadmin
 
 from django.urls import path
 from apps.users.views import UserCreateViewSet, UserDetailViewSet
-from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet
+from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet, SelectAnswerCreateViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -27,4 +27,6 @@ urlpatterns = [
     path('detail/', UserDetailViewSet.as_view()),
     path('create/normal/question/', NormalQuestionCreateViewSet.as_view()),
     path('create/select/question/', SelectQuestionCreateViewSet.as_view()),
+    path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),
+    path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),
 ]
