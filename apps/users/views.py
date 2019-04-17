@@ -11,7 +11,6 @@ User = get_user_model()
 
 class UserCreateViewSet(generics.CreateAPIView):
     serializer_class = UserRegSerializer
-    queryset = User.objects.all()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
