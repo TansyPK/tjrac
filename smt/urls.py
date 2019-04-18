@@ -20,6 +20,8 @@ from apps.users.views import UserCreateViewSet, UserDetailViewSet
 from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet,\
     SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet,\
     NormalQuestionsDetailViewSet
+from apps.operations.views import SelectOperationCreateViewSet, NormalOperationCreateViewSet,\
+    SelectOperationDetailViewSet, NormalOperationDetailViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -35,4 +37,8 @@ urlpatterns = [
     re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),
     re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),
+    re_path('^create/select/operation/', SelectOperationCreateViewSet.as_view()),
+    re_path('^create/normal/operation/', NormalOperationCreateViewSet.as_view()),
+    re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),
+    re_path('^list/normal/operations/$', NormalOperationDetailViewSet.as_view()),
 ]
