@@ -31,7 +31,7 @@ class UserCreateViewSet(generics.CreateAPIView):
 
 class UserDetailViewSet(generics.RetrieveAPIView):
     serializer_class = UserDetailSerializer
-    authentication_classes = (JSONWebTokenAuthentication,)
+    # authentication_classes = (JSONWebTokenAuthentication,)
 
     def get_object(self):
         return self.request.user
