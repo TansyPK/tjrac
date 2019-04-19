@@ -17,6 +17,7 @@ class UserProfile(AbstractUser):
     mobile = models.CharField("电话", max_length=11)
     email = models.EmailField("邮箱", max_length=100, null=True, blank=True)
     type = models.IntegerField("类型", default=0)
+    score = models.IntegerField("积分", default=0)
 
     class Meta:
         verbose_name = "用户信息"
