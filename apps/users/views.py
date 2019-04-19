@@ -35,3 +35,11 @@ class UserDetailViewSet(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UsersDetailByTypeViewSet(generics.ListAPIView):
+    serializer_class = UserDetailSerializer
+    # authentication_classes = (JSONWebTokenAuthentication,)
+
+    def get_queryset(self):
+        return User.objects.filter(type=self.request.GET.get('type'))
