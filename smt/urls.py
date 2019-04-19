@@ -25,21 +25,21 @@ from apps.operations.views import SelectOperationCreateViewSet, NormalOperationC
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
-    path('xadmin/', xadmin.site.urls),
-    path('login/', obtain_jwt_token),
-    path('signup/', UserCreateViewSet.as_view()),
-    path('user/detail/', UserDetailViewSet.as_view()),
-    re_path('^users/detail/$', UsersDetailByTypeViewSet.as_view()),
-    path('create/normal/question/', NormalQuestionCreateViewSet.as_view()),
-    path('create/select/question/', SelectQuestionCreateViewSet.as_view()),
-    path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),
-    path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),
-    re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),
-    re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),
-    re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),
-    re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),
-    re_path('^create/select/operation/', SelectOperationCreateViewSet.as_view()),
-    re_path('^create/normal/operation/', NormalOperationCreateViewSet.as_view()),
-    re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),
-    re_path('^list/normal/operations/$', NormalOperationDetailViewSet.as_view()),
+    path('xadmin/', xadmin.site.urls),  # 资源后台管理
+    path('login/', obtain_jwt_token),  # 登陆接口
+    path('signup/', UserCreateViewSet.as_view()),  # 注册接口
+    path('user/detail/', UserDetailViewSet.as_view()),  # 用户个人信息接口
+    re_path('^users/detail/$', UsersDetailByTypeViewSet.as_view()),  # 用户列表接口（学生列表、教师列表）
+    path('create/normal/question/', NormalQuestionCreateViewSet.as_view()),  # 创建普通问题接口
+    path('create/select/question/', SelectQuestionCreateViewSet.as_view()),  # 创建选择题接口
+    path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),  # 创建普通问题回答接口
+    path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),  # 创建选择题回答接口
+    re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 选择题列表接口
+    re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 选择题答案列表接口
+    re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 普通问题列表接口
+    re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 普通问题回答列表接口
+    re_path('^create/select/operation/', SelectOperationCreateViewSet.as_view()),  # 用户选择题回答操作接口
+    re_path('^create/normal/operation/', NormalOperationCreateViewSet.as_view()),  # 用户普通问题回答操作接口
+    re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),  # 用户选择题操作记录列表接口
+    re_path('^list/normal/operations/$', NormalOperationDetailViewSet.as_view()),  # 用户普通问题操作记录列表接口
 ]
