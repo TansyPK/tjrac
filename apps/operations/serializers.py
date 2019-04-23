@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from operations.models import SelectOperations, NormalOperations
+from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations
 
 
 class SelectOperationsSerializers(serializers.ModelSerializer):
@@ -28,6 +28,24 @@ class NormalOperationsSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = NormalOperations
+        fields = '__all__'
+
+
+class SelectTeacherOperationsSerializers(serializers.ModelSerializer):
+    """
+    学生预约小老师操作
+    """
+    selector_id = serializers.IntegerField(label="学生编号", help_text="学生id", required=True, allow_null=False)
+    teacher_id = serializers.IntegerField(label="老师编号", help_text="老师id", required=True, allow_null=False)
+    status = serializers.IntegerField(label="邀约状态", help_text="0:失效 1:生效", required=True, allow_null=False)
+    room = serializers.IntegerField(label="学习区域", help_text="学习房间号")
+    interview_time = serializers.DateTimeField(label="邀约时间", help_text="邀约时间")
+    end_time = serializers.DateTimeField(label="结束时间", help_text="结束时间")
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+    class Meta:
+        model = SelectTeacherOperations
         fields = '__all__'
 
 

@@ -15,3 +15,14 @@ class NormalOperations(models.Model):
     answer_id = models.IntegerField()
     user_id = models.IntegerField()
     score = models.IntegerField(blank=True, default=0)
+
+
+class SelectTeacherOperations(models.Model):
+    selector_id = models.IntegerField()
+    teacher_id = models.IntegerField()
+    room = models.IntegerField()
+    status = models.IntegerField()
+    interview_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
