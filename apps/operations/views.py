@@ -1,10 +1,11 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
-from operations.models import SelectOperations, NormalOperations
+from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations
 from operations.serializers import SelectOperationsSerializers, NormalOperationsSerializers,\
-    SelectOperationsDetailSerializers, NormalOperationsDetailSerializers, SelectTeacherOperationsSerializers
+    SelectOperationsDetailSerializers, NormalOperationsDetailSerializers, SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers
 from rest_framework.response import Response
 from rest_framework import status
+from users.models import UserProfile
 
 
 class SelectOperationCreateViewSet(generics.CreateAPIView):
@@ -70,3 +71,39 @@ class NormalOperationDetailViewSet(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         self.queryset = NormalOperations.objects.filter(user_id=request.user.id)
         return self.list(request, *args, **kwargs)
+
+
+class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
+    """
+    学生预约小老师列表
+    """
+    serializer_class = SelectTeacherOperationsDetailSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            teacher = UserProfile.objects.get(id=i.teacher_id)
+            student = UserProfile.objects.get(id=i.selector_id)
+            serializer = SelectTeacherOperationsDetailSerializers(data={
+                'selector_name': student.username,
+                'teacher_name':  teacher.username,
+                'room': i.room,
+                'status': i.status
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(queryset)
+
+    def get_queryset(self):
+        if self.request.user.type == 0:
+            return SelectTeacherOperations.objects.filter(selector_id=self.request.user.id)
+        else:
+            return SelectTeacherOperations.objects.filter(teacher_id=self.request.user.id)
+

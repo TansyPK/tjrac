@@ -65,3 +65,13 @@ class NormalOperationsDetailSerializers(serializers.ModelSerializer):
     class Meta:
         model = NormalOperations
         fields = '__all__'
+
+
+class SelectTeacherOperationsDetailSerializers(serializers.Serializer):
+    """
+    学生预约小老师详情
+    """
+    selector_name = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
+    teacher_name = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
+    room = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
+    status = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
