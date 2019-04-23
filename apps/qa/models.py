@@ -12,6 +12,7 @@ class SelectQuestions(models.Model):
     type = models.IntegerField(blank=True, default=0)
     correct_code = models.CharField(max_length=100)
     analyzations = models.TextField(default="")
+    level = models.IntegerField(blank=True, default=0)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 

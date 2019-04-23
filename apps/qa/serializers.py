@@ -11,6 +11,7 @@ class SelectQuestionSerializer(serializers.ModelSerializer):
     type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
     correct_code = serializers.CharField(label="正确回答", help_text="正确回答的编号", required=True)
     analyzations = serializers.CharField(label="问题解析", help_text="问题解析", required=True)
+    level = serializers.IntegerField(label="问题等级", help_text="问题权重", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
     updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
 
