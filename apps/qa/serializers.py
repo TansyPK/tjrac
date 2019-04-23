@@ -7,9 +7,10 @@ class SelectQuestionSerializer(serializers.ModelSerializer):
     创建选择题
     """
     title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
-    content = serializers.CharField(label="内容", help_text="问题内容")
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
     type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
-    correct_code = serializers.CharField(label="正确回答", help_text="正确回答的编号")
+    correct_code = serializers.CharField(label="正确回答", help_text="正确回答的编号", required=True)
+    analyzations = serializers.CharField(label="问题解析", help_text="问题解析", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
     updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
 
@@ -39,7 +40,7 @@ class NormalQuestionSerializer(serializers.ModelSerializer):
     """
     owner = serializers.IntegerField(label="创建者", help_text="问题创建者", required=True)
     title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
-    content = serializers.CharField(label="内容", help_text="问题内容")
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
     type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
     updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
@@ -55,7 +56,7 @@ class NormalAnswerSerializer(serializers.ModelSerializer):
     """
     owner = serializers.IntegerField(label="创建者", help_text="回答创建者", required=True)
     question_id = serializers.IntegerField(label="所属问题编号", help_text="问题id", required=True)
-    content = serializers.CharField(label="内容", help_text="回答内容")
+    content = serializers.CharField(label="内容", help_text="回答内容", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
     updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
 

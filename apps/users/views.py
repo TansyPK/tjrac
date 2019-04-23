@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from apps.users.serializers import UserRegSerializer, UserDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -31,7 +32,8 @@ class UserCreateViewSet(generics.CreateAPIView):
 
 class UserDetailViewSet(generics.RetrieveAPIView):
     serializer_class = UserDetailSerializer
-    # authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return self.request.user
@@ -39,7 +41,8 @@ class UserDetailViewSet(generics.RetrieveAPIView):
 
 class UsersDetailByTypeViewSet(generics.ListAPIView):
     serializer_class = UserDetailSerializer
-    # authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return User.objects.filter(type=self.request.GET.get('type'))
