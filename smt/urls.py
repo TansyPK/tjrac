@@ -22,7 +22,7 @@ from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewS
     NormalQuestionsDetailViewSet
 from apps.operations.views import SelectOperationCreateViewSet, NormalOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
-    SelectTeacherOperationsDetailViewSet
+    SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -35,6 +35,7 @@ urlpatterns = [
     path('create/select/question/', SelectQuestionCreateViewSet.as_view()),  # 创建选择题接口
     path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),  # 创建普通问题回答接口
     path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),  # 创建选择题回答接口
+    path('create/select/comment/', SelectCommentOperationsCreateViewSet.as_view()),  # 创建选择评论接口
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 选择题列表接口
     re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 选择题答案列表接口
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 普通问题列表接口

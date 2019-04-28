@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations
+from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations, SelectCommentOperations
 
 
 class SelectOperationsSerializers(serializers.ModelSerializer):
@@ -46,6 +46,21 @@ class SelectTeacherOperationsSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = SelectTeacherOperations
+        fields = '__all__'
+
+
+class SelectCommentOperationsSerializers(serializers.ModelSerializer):
+    """
+    用户评论操作
+    """
+    question_id = serializers.IntegerField(label="问题编号", help_text="问题id", required=True, allow_null=False)
+    owner = serializers.IntegerField(label="评论所属者", help_text="评论所属者", required=True, allow_null=False)
+    content = serializers.CharField(label="评论内容", help_text="评论内容", required=True, allow_null=False)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+    class Meta:
+        model = SelectCommentOperations
         fields = '__all__'
 
 

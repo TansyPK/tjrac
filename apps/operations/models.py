@@ -26,3 +26,11 @@ class SelectTeacherOperations(models.Model):
     end_time = models.DateTimeField()
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+
+class SelectCommentOperations(models.Model):
+    question_id = models.IntegerField()
+    owner = models.IntegerField()
+    content = models.TextField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)

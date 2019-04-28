@@ -2,7 +2,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations
 from operations.serializers import SelectOperationsSerializers, NormalOperationsSerializers,\
-    SelectOperationsDetailSerializers, NormalOperationsDetailSerializers, SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers
+    SelectOperationsDetailSerializers, NormalOperationsDetailSerializers,\
+    SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers, SelectCommentOperationsSerializers
 from rest_framework.response import Response
 from rest_framework import status
 from users.models import UserProfile
@@ -15,6 +16,20 @@ class SelectOperationCreateViewSet(generics.CreateAPIView):
     serializer_class = SelectOperationsSerializers
     # authentication_classes = (JSONWebTokenAuthentication,)
 
+    def create(self, request, *args, **kwargs):
+        data = {
+            "question_id": int(request.POST.get('question_id')),
+            "answer_id": int(request.POST.get('answer_id')),
+            "user_id": request.user.id,
+            "score": int(request.POST.get('score')),
+            'is_correct': bool(request.POST.get('is_correct'))
+        }
+        serializer_one = SelectOperationsSerializers(data=data)
+        serializer_one.is_valid(raise_exception=True)
+        self.perform_create(serializer_one)
+        headers = self.get_success_headers(serializer_one.data)
+        return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class NormalOperationCreateViewSet(generics.CreateAPIView):
     """
@@ -23,10 +38,23 @@ class NormalOperationCreateViewSet(generics.CreateAPIView):
     serializer_class = NormalOperationsSerializers
     # authentication_classes = (JSONWebTokenAuthentication, )
 
+    def create(self, request, *args, **kwargs):
+        data = {
+            "question_id": int(request.POST.get('question_id')),
+            "answer_id": int(request.POST.get('answer_id')),
+            "user_id": request.user.id,
+            "score": int(request.POST.get('score'))
+        }
+        serializer_one = NormalOperationsSerializers(data=data)
+        serializer_one.is_valid(raise_exception=True)
+        self.perform_create(serializer_one)
+        headers = self.get_success_headers(serializer_one.data)
+        return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
     """
-    用户普通问题操作创建
+    小老师预约操作创建
     """
     serializer_class = SelectTeacherOperationsSerializers
     # authentication_classes = (JSONWebTokenAuthentication, )
@@ -43,6 +71,29 @@ class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
             'updated_time': None
         }
         serializer_one = SelectTeacherOperationsSerializers(data=data)
+        serializer_one.is_valid(raise_exception=True)
+        self.perform_create(serializer_one)
+        headers = self.get_success_headers(serializer_one.data)
+        return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class SelectCommentOperationsCreateViewSet(generics.CreateAPIView):
+    """
+    用户评论操作创建
+    """
+
+    serializer_class = SelectCommentOperationsSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def create(self, request, *args, **kwargs):
+        data = {
+            "question_id": int(request.POST.get('question_id')),
+            "owner": request.user.id,
+            "content": request.POST.get('content'),
+            "created_time": None,
+            "updated_time": None
+        }
+        serializer_one = SelectCommentOperationsSerializers(data=data)
         serializer_one.is_valid(raise_exception=True)
         self.perform_create(serializer_one)
         headers = self.get_success_headers(serializer_one.data)
