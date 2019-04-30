@@ -1,6 +1,6 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
-from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations
+from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations, SelectCommentOperations
 from operations.serializers import SelectOperationsSerializers, NormalOperationsSerializers,\
     SelectOperationsDetailSerializers, NormalOperationsDetailSerializers,\
     SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers, SelectCommentOperationsSerializers
@@ -87,7 +87,7 @@ class SelectCommentOperationsCreateViewSet(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = {
-            "question_id": int(request.POST.get('question_id')),
+            "question_id": int(request.POST.get('question_id')) if request.POST.get('question_id') else None,
             "owner": request.user.id,
             "content": request.POST.get('content'),
             "created_time": None,
@@ -158,3 +158,14 @@ class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
         else:
             return SelectTeacherOperations.objects.filter(teacher_id=self.request.user.id)
 
+
+class SelectCommentOperationsDetailViewSet(generics.ListAPIView):
+    """
+    获取评论列表(question_id 获取)
+    """
+    serializer_class = SelectCommentOperationsSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def get(self, request, *args, **kwargs):
+        self.queryset = SelectCommentOperations.objects.filter(question_id=request.GET.get('question_id'))
+        return self.list(request, *args, **kwargs)
