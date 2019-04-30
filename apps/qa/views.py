@@ -3,6 +3,8 @@ from rest_framework import generics
 from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions
 from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, NormalAnswerSerializer,\
     SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, NormalQuestionDetailSerializer
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class SelectQuestionCreateViewSet(generics.CreateAPIView):
@@ -12,6 +14,24 @@ class SelectQuestionCreateViewSet(generics.CreateAPIView):
     serializer_class = SelectQuestionSerializer
     # authentication_classes = (JSONWebTokenAuthentication,)
 
+    def create(self, request, *args, **kwargs):
+        data = {
+            "title": request.POST.get('title'),
+            "content": request.POST.get('content'),
+            "type": int(request.POST.get('type')) if request.POST.get('type') else None,
+            "correct_code": request.POST.get('correct_code'),
+            "analyzations": request.POST.get('correct_code'),
+            "score": int(request.POST.get('score')) if request.POST.get('score') else None,
+            "level": int(request.POST.get('level')) if request.POST.get('level') else None,
+            "created_time": None,
+            "updated_time": None,
+        }
+        serializer_one = SelectQuestionSerializer(data=data)
+        serializer_one.is_valid(raise_exception=True)
+        self.perform_create(serializer_one)
+        headers = self.get_success_headers(serializer_one.data)
+        return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class NormalQuestionCreateViewSet(generics.CreateAPIView):
     """
@@ -19,6 +39,22 @@ class NormalQuestionCreateViewSet(generics.CreateAPIView):
     """
     serializer_class = NormalQuestionSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def create(self, request, *args, **kwargs):
+        data = {
+            "owner": request.user.id,
+            "title": request.POST.get('title'),
+            "content": request.POST.get('content'),
+            "score": int(request.POST.get('score')) if request.POST.get('score') else None,
+            "type": int(request.POST.get('type')) if request.POST.get('type') else None,
+            "created_time": None,
+            "updated_time": None,
+        }
+        serializer_one = NormalQuestionSerializer(data=data)
+        serializer_one.is_valid(raise_exception=True)
+        self.perform_create(serializer_one)
+        headers = self.get_success_headers(serializer_one.data)
+        return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class SelectAnswerCreateViewSet(generics.CreateAPIView):
