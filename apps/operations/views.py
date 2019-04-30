@@ -14,16 +14,22 @@ class SelectOperationCreateViewSet(generics.CreateAPIView):
     用户选择题操作创建
     """
     serializer_class = SelectOperationsSerializers
-    # authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,)
 
     def create(self, request, *args, **kwargs):
         data = {
-            "question_id": int(request.POST.get('question_id')),
-            "answer_id": int(request.POST.get('answer_id')),
+            "question_id": int(request.POST.get('question_id')) if request.POST.get('question_id') else None,
+            "answer_id": int(request.POST.get('answer_id')) if request.POST.get('answer_id') else None,
             "user_id": request.user.id,
-            "score": int(request.POST.get('score')),
-            'is_correct': bool(request.POST.get('is_correct'))
+            "score": int(request.POST.get('score')) if request.POST.get('score') else None,
+            'is_correct': bool(int(request.POST.get('is_correct')) if request.POST.get('is_correct') else False)
         }
+        user = UserProfile.objects.get(id=request.user.id)
+        if data['is_correct']:
+            user.score += data['score']
+        else:
+            user.score += data['score']/2
+        user.save()
         serializer_one = SelectOperationsSerializers(data=data)
         serializer_one.is_valid(raise_exception=True)
         self.perform_create(serializer_one)
@@ -40,11 +46,14 @@ class NormalOperationCreateViewSet(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = {
-            "question_id": int(request.POST.get('question_id')),
-            "answer_id": int(request.POST.get('answer_id')),
+            "question_id": int(request.POST.get('question_id')) if request.POST.get('question_id') else None,
+            "answer_id": int(request.POST.get('answer_id')) if request.POST.get('answer_id') else None,
             "user_id": request.user.id,
-            "score": int(request.POST.get('score'))
+            "score": int(request.POST.get('score')) if request.POST.get('score') else None
         }
+        user = UserProfile.objects.get(id=request.user.id)
+        user.score += data['score']
+        user.save()
         serializer_one = NormalOperationsSerializers(data=data)
         serializer_one.is_valid(raise_exception=True)
         self.perform_create(serializer_one)
