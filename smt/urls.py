@@ -23,6 +23,7 @@ from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewS
 from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet
+from apps.course.views import CourseCreateViewSet, CourseListViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
@@ -36,6 +37,7 @@ urlpatterns = [
     path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),  # 创建普通问题回答接口
     path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),  # 创建选择题回答接口
     path('create/select/comment/', SelectCommentOperationsCreateViewSet.as_view()),  # 创建选择评论接口
+    path('create/course/', CourseCreateViewSet.as_view()),  # 创建小老师课程接口
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 选择题列表接口
     re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 选择题答案列表接口
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 普通问题列表接口
@@ -46,4 +48,5 @@ urlpatterns = [
     re_path('^create/select/teacher/$', SelectTeacherOperationCreateViewSet.as_view()),  # 用户预约小老师接口
     re_path('^list/select/teacher/$', SelectTeacherOperationsDetailViewSet.as_view()),  # 学生/老师预约小老师列表
     re_path('^list/select/comment/$', SelectCommentOperationsDetailViewSet.as_view()),  # 选择题评论列表
+    re_path('^list/courses/$', CourseListViewSet.as_view()),  # 小老师课程列表
 ]
