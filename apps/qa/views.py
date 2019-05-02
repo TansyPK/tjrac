@@ -1,6 +1,9 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
+
+from operations.serializers import NormalOperationsSerializers
 from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions
+from users.models import UserProfile
 from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, NormalAnswerSerializer,\
     SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, NormalQuestionDetailSerializer
 from rest_framework.response import Response
@@ -71,6 +74,28 @@ class NormalAnswerCreateViewSet(generics.CreateAPIView):
     """
     serializer_class = NormalAnswerSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        # 用户操作记录
+        operation = {
+            "question_id": serializer.data['question_id'],
+            "answer_id": serializer.data['id'],
+            "user_id": serializer.data['owner'],
+            "score": 5
+        }
+        serializer_two = NormalOperationsSerializers(data=operation)
+        serializer_two.is_valid(raise_exception=True)
+        user = UserProfile.objects.get(id=request.user.id)
+        user.score += 5
+        user.save()
+        serializer_two.save()
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class SelectQuestionsDetailViewSet(generics.ListAPIView):

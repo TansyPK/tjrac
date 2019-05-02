@@ -20,7 +20,7 @@ from apps.users.views import UserCreateViewSet, UserDetailViewSet, UsersDetailBy
 from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet,\
     SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet,\
     NormalQuestionsDetailViewSet
-from apps.operations.views import SelectOperationCreateViewSet, NormalOperationCreateViewSet, \
+from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet
 from rest_framework_jwt.views import obtain_jwt_token
@@ -41,7 +41,6 @@ urlpatterns = [
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 普通问题列表接口
     re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 普通问题回答列表接口
     re_path('^create/select/operation/$', SelectOperationCreateViewSet.as_view()),  # 用户选择题回答操作接口
-    re_path('^create/normal/operation/$', NormalOperationCreateViewSet.as_view()),  # 用户普通问题回答操作接口
     re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),  # 用户选择题操作记录列表接口
     re_path('^list/normal/operations/$', NormalOperationDetailViewSet.as_view()),  # 用户普通问题操作记录列表接口
     re_path('^create/select/teacher/$', SelectTeacherOperationCreateViewSet.as_view()),  # 用户预约小老师接口

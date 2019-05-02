@@ -37,30 +37,6 @@ class SelectOperationCreateViewSet(generics.CreateAPIView):
         return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class NormalOperationCreateViewSet(generics.CreateAPIView):
-    """
-    用户普通问题操作创建
-    """
-    serializer_class = NormalOperationsSerializers
-    # authentication_classes = (JSONWebTokenAuthentication, )
-
-    def create(self, request, *args, **kwargs):
-        data = {
-            "question_id": int(request.POST.get('question_id')) if request.POST.get('question_id') else None,
-            "answer_id": int(request.POST.get('answer_id')) if request.POST.get('answer_id') else None,
-            "user_id": request.user.id,
-            "score": int(request.POST.get('score')) if request.POST.get('score') else None
-        }
-        user = UserProfile.objects.get(id=request.user.id)
-        user.score += data['score']
-        user.save()
-        serializer_one = NormalOperationsSerializers(data=data)
-        serializer_one.is_valid(raise_exception=True)
-        self.perform_create(serializer_one)
-        headers = self.get_success_headers(serializer_one.data)
-        return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
 class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
     """
     小老师预约操作创建
