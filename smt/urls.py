@@ -26,7 +26,7 @@ from apps.operations.views import SelectOperationCreateViewSet, \
 from apps.course.views import CourseCreateViewSet, CourseListViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
-from infomations.views import InformationsCreateViewSet, InformationCommentsCreateViewSet
+from infomations.views import InformationsCreateViewSet, InformationCommentsCreateViewSet, InformationsListViewSet
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),  # 资源后台管理
@@ -53,5 +53,6 @@ urlpatterns = [
     re_path('^list/select/teacher/$', SelectTeacherOperationsDetailViewSet.as_view()),  # 我的预约
     re_path('^list/select/comment/$', SelectCommentOperationsDetailViewSet.as_view()),  # 选择题评论列表
     re_path('^list/courses/$', CourseListViewSet.as_view()),  # 小老师课程列表
-    re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view())  # 我的发布
+    re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view()),  # 我的发布
+    re_path('^list/informations/$', InformationsListViewSet.as_view()),  # 讲解邀约列表
 ]
