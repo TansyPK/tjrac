@@ -39,7 +39,7 @@ urlpatterns = [
     path('create/select/comment/', SelectCommentOperationsCreateViewSet.as_view()),  # 创建选择评论接口
     path('create/course/', CourseCreateViewSet.as_view()),  # 创建小老师课程接口
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 闯关选择题
-    re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答
+    # re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答（已集成至获取问题接口）
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 讨论区列表
     re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 讨论区回答列表
     re_path('^create/select/operation/$', SelectOperationCreateViewSet.as_view()),  # 闯关记录接口

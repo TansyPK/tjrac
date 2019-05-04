@@ -107,9 +107,44 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
     serializer_class = SelectQuestionDetailSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
 
-    def get(self, request, *args, **kwargs):
-        self.queryset = SelectQuestions.objects.filter(type=request.GET.get('type'))
-        return self.list(request, *args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            answers = []
+            for j in SelectAnswers.objects.filter(question_id=i.id):
+                answer_serializer = SelectAnswerDetailSerializer(data={
+                    "question_id": j.question_id,
+                    "content": j.content,
+                    "select_code": j.select_code,
+                    "created_time": j.created_time,
+                    "updated_time": j.updated_time
+                })
+                answer_serializer.is_valid(raise_exception=True)
+                answers.append(answer_serializer.data)
+            serializer = SelectQuestionDetailSerializer(data={
+                "title": i.title,
+                "content": i.content,
+                "type": i.type,
+                "correct_code": i.correct_code,
+                "analyzations": i.analyzations,
+                "score": i.score,
+                "level": i.level,
+                "answers": answers,
+                "created_time": i.created_time,
+                "updated_time": i.updated_time
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(res)
+
+    def get_queryset(self):
+        return SelectQuestions.objects.filter(type=self.request.GET.get('type'))
 
 
 class SelectAnswersDetailViewSet(generics.ListAPIView):
