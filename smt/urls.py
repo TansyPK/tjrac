@@ -17,9 +17,9 @@ import xadmin
 
 from django.urls import path, re_path
 from apps.users.views import UserCreateViewSet, UserDetailViewSet, UsersDetailByTypeViewSet
-from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet,\
-    SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet,\
-    NormalQuestionsDetailViewSet
+from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet, \
+    SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet, \
+    NormalQuestionsDetailViewSet, NormalQuestionsDetailByIdViewSet
 from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet
@@ -49,4 +49,5 @@ urlpatterns = [
     re_path('^list/select/teacher/$', SelectTeacherOperationsDetailViewSet.as_view()),  # 学生/老师预约小老师列表
     re_path('^list/select/comment/$', SelectCommentOperationsDetailViewSet.as_view()),  # 选择题评论列表
     re_path('^list/courses/$', CourseListViewSet.as_view()),  # 小老师课程列表
+    re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view())  # 我的发布
 ]

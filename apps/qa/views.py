@@ -4,8 +4,10 @@ from rest_framework import generics
 from operations.serializers import NormalOperationsSerializers
 from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions
 from users.models import UserProfile
-from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, NormalAnswerSerializer,\
-    SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, NormalQuestionDetailSerializer
+from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, \
+    NormalAnswerSerializer, \
+    SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, \
+    NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -132,6 +134,37 @@ class NormalQuestionsDetailViewSet(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         self.queryset = NormalQuestions.objects.filter(type=request.GET.get('type'))
         return self.list(request, *args, **kwargs)
+
+
+class NormalQuestionsDetailByIdViewSet(generics.ListAPIView):
+    """
+    普通问题列表获取(当前用户)
+    """
+    serializer_class = NormalQuestionDetailByIdSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def list(self, request, *args, **kwargs):
+        res=[]
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            serializer = NormalQuestionDetailByIdSerializer(data={
+                "title": i.title,
+                "score": i.score,
+                "type": i.type,
+                "created_time": i.created_time,
+                "updated_time": i.updated_time
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(res)
+
+    def get_queryset(self):
+        return NormalQuestions.objects.filter(owner=self.request.user.id)
 
 
 class NormalAnswersDetailViewSet(generics.ListAPIView):

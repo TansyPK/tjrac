@@ -89,6 +89,14 @@ class NormalQuestionDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class NormalQuestionDetailByIdSerializer(serializers.Serializer):
+    title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
+    score = serializers.IntegerField(label="分数", help_text="问题分数", required=True)
+    type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+
 class NormalAnswerDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
