@@ -88,11 +88,15 @@ class SelectAnswerDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class NormalQuestionDetailSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = NormalQuestions
-        fields = '__all__'
+class NormalQuestionDetailSerializer(serializers.Serializer):
+    owner = serializers.IntegerField(label="创建者", help_text="问题创建者", required=True)
+    title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    score = serializers.IntegerField(label="分数", help_text="问题分数", required=True)
+    type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
+    answers = serializers.ListField(label="回答列表", help_text="回答列表", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
 
 
 class NormalQuestionDetailByIdSerializer(serializers.Serializer):
@@ -101,6 +105,14 @@ class NormalQuestionDetailByIdSerializer(serializers.Serializer):
     type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
     updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+
+class NormalAnswersDetailSerializer(serializers.Serializer):
+    owner = serializers.IntegerField(label="创建者", help_text="问题创建者", required=True)
+    question_id = serializers.IntegerField(label="问题id", help_text="问题id", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", required=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", required=True)
 
 
 class NormalAnswerDetailSerializer(serializers.ModelSerializer):

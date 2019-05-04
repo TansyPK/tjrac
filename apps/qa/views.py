@@ -7,7 +7,7 @@ from users.models import UserProfile
 from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, \
     NormalAnswerSerializer, \
     SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, \
-    NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer
+    NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer, NormalAnswersDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -166,9 +166,42 @@ class NormalQuestionsDetailViewSet(generics.ListAPIView):
     serializer_class = NormalQuestionDetailSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
 
-    def get(self, request, *args, **kwargs):
-        self.queryset = NormalQuestions.objects.filter(type=request.GET.get('type'))
-        return self.list(request, *args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            answers = []
+            for j in NormalAnswers.objects.filter(question_id=i.id):
+                answer_serializer = NormalAnswersDetailSerializer(data={
+                    "owner": j.owner,
+                    "question_id": j.question_id,
+                    "content": j.content,
+                    "created_time": j.created_time,
+                    "updated_time": j.updated_time
+                })
+                answer_serializer.is_valid(raise_exception=True)
+                answers.append(answer_serializer.data)
+            serializer = NormalQuestionDetailSerializer(data={
+                "owner": i.owner,
+                "title": i.title,
+                "content": i.content,
+                "score": i.score,
+                "type": i.type,
+                "answers": answers,
+                "created_time": i.created_time,
+                "updated_time": i.updated_time
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(res)
+
+    def get_queryset(self):
+        return NormalQuestions.objects.filter(type=self.request.GET.get('type'))
 
 
 class NormalQuestionsDetailByIdViewSet(generics.ListAPIView):
