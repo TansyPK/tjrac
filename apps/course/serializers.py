@@ -11,6 +11,7 @@ class CourseSerializer(serializers.ModelSerializer):
     content = serializers.CharField(label="课程内容", help_text="课程简介", required=True)
     room = serializers.IntegerField(label="学习区域", help_text="学习区域id", required=True)
     score = serializers.IntegerField(label="课程分数", help_text="积分", required=True)
+    status = serializers.IntegerField(label="课程状态", help_text="课程状态", required=True)
     interview_time = serializers.DateTimeField(label="邀约时间", help_text="邀约时间", required=True)
     end_time = serializers.DateTimeField(label="结束时间", help_text="结束时间", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)

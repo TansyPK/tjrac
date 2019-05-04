@@ -23,7 +23,8 @@ class CourseCreateViewSet(generics.CreateAPIView):
             "title": request.POST.get('title'),
             "content": request.POST.get('content'),
             "room": int(request.POST.get('room')) if request.POST.get('room') else 0,
-            "score": int(request.POST.get('score')) if request.POST.get('score') else None,
+            "score": int(request.POST.get('score')) if request.POST.get('score') else 0,
+            "status": int(request.POST.get('status')) if request.POST.get('status') else 0,
             "interview_time": request.POST.get('interview_time'),
             "end_time": request.POST.get('end_time'),
             "created_time": None,
@@ -46,6 +47,5 @@ class CourseListViewSet(generics.ListAPIView):
     serializer_class = CourseSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
 
-    def get(self, request, *args, **kwargs):
-        self.queryset = Course.objects.filter(type=request.GET.get('type') if request.GET.get('type') else 0)
-        return self.list(request, *args, **kwargs)
+    def get_queryset(self):
+        return Course.objects.all()

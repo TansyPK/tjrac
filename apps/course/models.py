@@ -13,6 +13,7 @@ class Course(models.Model):
     content = models.TextField(default="")
     room = models.IntegerField(default=0)
     score = models.IntegerField(blank=True, default=0)
+    status = models.IntegerField(default=0)  # 0 待完成 1 未完成 2 已完成
     interview_time = models.DateTimeField(default=now())
     end_time = models.DateTimeField(default=now())
     created_time = models.DateTimeField(auto_now_add=True)
