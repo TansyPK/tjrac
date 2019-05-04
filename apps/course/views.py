@@ -22,8 +22,10 @@ class CourseCreateViewSet(generics.CreateAPIView):
             "owner": request.user.id,
             "title": request.POST.get('title'),
             "content": request.POST.get('content'),
-            "type": int(request.POST.get('type')) if request.POST.get('type') else 0,
+            "room": int(request.POST.get('room')) if request.POST.get('room') else 0,
             "score": int(request.POST.get('score')) if request.POST.get('score') else None,
+            "interview_time": request.POST.get('interview_time'),
+            "end_time": request.POST.get('end_time'),
             "created_time": None,
             "updated_time": None,
         }
