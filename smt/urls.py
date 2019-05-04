@@ -26,6 +26,8 @@ from apps.operations.views import SelectOperationCreateViewSet, \
 from apps.course.views import CourseCreateViewSet, CourseListViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
+from infomations.views import InformationsCreateViewSet, InformationCommentsCreateViewSet
+
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),  # 资源后台管理
     path('login/', obtain_jwt_token),  # 登陆接口
@@ -38,6 +40,8 @@ urlpatterns = [
     path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),  # 创建闯关回答接口（系统）
     path('create/select/comment/', SelectCommentOperationsCreateViewSet.as_view()),  # 创建选择评论接口
     path('create/course/', CourseCreateViewSet.as_view()),  # 创建小老师课程接口
+    path('create/information/', InformationsCreateViewSet.as_view()),  # 创建邀约讲解
+    path('create/information/comment/', InformationCommentsCreateViewSet.as_view()),  # 创建邀约讲解回答
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 闯关选择题
     # re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答（已集成至获取问题接口）
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 讨论区列表

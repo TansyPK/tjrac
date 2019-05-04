@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'qa',
     'operations',
     'course',
+    'infomations',
 ]
 
 MIDDLEWARE = [
