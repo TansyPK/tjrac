@@ -64,13 +64,13 @@ class SelectCommentOperationsSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SelectOperationsDetailSerializers(serializers.ModelSerializer):
+class SelectOperationsDetailSerializers(serializers.Serializer):
     """
     用户选择题操作详情
     """
-    class Meta:
-        model = SelectOperations
-        fields = '__all__'
+    title = serializers.CharField(label="选择题题目", help_text="标题", required=True)
+    score = serializers.IntegerField(label="分数", help_text="积分", required=True)
+    is_correct = serializers.BooleanField(label="是否正确", help_text="正确与否", required=True)
 
 
 class NormalOperationsDetailSerializers(serializers.ModelSerializer):

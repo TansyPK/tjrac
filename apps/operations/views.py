@@ -1,9 +1,10 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations, SelectCommentOperations
-from operations.serializers import SelectOperationsSerializers, NormalOperationsSerializers,\
+from operations.serializers import SelectOperationsSerializers,\
     SelectOperationsDetailSerializers, NormalOperationsDetailSerializers,\
     SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers, SelectCommentOperationsSerializers
+from qa.models import SelectQuestions
 from rest_framework.response import Response
 from rest_framework import status
 from users.models import UserProfile
@@ -92,9 +93,27 @@ class SelectOperationDetailViewSet(generics.ListAPIView):
     serializer_class = SelectOperationsDetailSerializers
     # authentication_classes = (JSONWebTokenAuthentication, )
 
-    def get(self, request, *args, **kwargs):
-        self.queryset = SelectOperations.objects.filter(user_id=request.user.id)
-        return self.list(request, *args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            question = SelectQuestions.objects.get(id=i.question_id)
+            serializer = SelectOperationsDetailSerializers(data={
+                "title": question.title,
+                "score": question.score,
+                "is_correct": i.is_correct
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(queryset)
+
+    def get_queryset(self):
+        return SelectOperations.objects.filter(user_id=self.request.user.id)
 
 
 class NormalOperationDetailViewSet(generics.ListAPIView):
