@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'smt',        # 数据库名字
         'USER': 'root',          # 账号
-        'PASSWORD': 'abcd123456',    # 密码
+        'PASSWORD': '123456',    # 密码
         'HOST': '127.0.0.1',     # IP
         'PORT': '3306',          # 端口
         # 这里引擎用innodb（默认myisam）
@@ -152,9 +152,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.JSONRenderer',
-    # ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
 
 CORS_ORIGIN_ALLOW_ALL = True

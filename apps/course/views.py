@@ -20,13 +20,13 @@ class CourseCreateViewSet(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         data = {
             "owner": request.user.id,
-            "title": request.POST.get('title'),
-            "content": request.POST.get('content'),
-            "room": int(request.POST.get('room')) if request.POST.get('room') else 0,
-            "score": int(request.POST.get('score')) if request.POST.get('score') else 0,
-            "status": int(request.POST.get('status')) if request.POST.get('status') else 0,
-            "interview_time": request.POST.get('interview_time'),
-            "end_time": request.POST.get('end_time'),
+            "title": request.data.get('title'),
+            "content": request.data.get('content'),
+            "room": int(request.data.get('room')) if request.data.get('room') else 0,
+            "score": int(request.data.get('score')) if request.data.get('score') else 0,
+            "status": int(request.data.get('status')) if request.data.get('status') else 0,
+            "interview_time": request.data.get('interview_time'),
+            "end_time": request.data.get('end_time'),
             "created_time": None,
             "updated_time": None,
         }
