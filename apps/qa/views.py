@@ -182,6 +182,7 @@ class NormalQuestionsDetailViewSet(generics.ListAPIView):
                 answer_serializer.is_valid(raise_exception=True)
                 answers.append(answer_serializer.data)
             serializer = NormalQuestionDetailSerializer(data={
+                "id": i.id,
                 "owner": i.owner,
                 "title": i.title,
                 "content": i.content,
@@ -258,6 +259,7 @@ class NormalAnswersDetailViewSet(generics.ListAPIView):
                 answer_serializer.is_valid(raise_exception=True)
                 answers.append(answer_serializer.data)
             serializer = NormalQuestionDetailSerializer(data={
+                "id": i.id,
                 "owner": i.owner,
                 "title": i.title,
                 "content": i.content,

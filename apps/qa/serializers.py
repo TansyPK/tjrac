@@ -89,6 +89,7 @@ class SelectAnswerDetailSerializer(serializers.ModelSerializer):
 
 
 class NormalQuestionDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField(label="id", help_text="id", required=True)
     owner = serializers.IntegerField(label="创建者", help_text="问题创建者", required=True)
     title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
     content = serializers.CharField(label="内容", help_text="问题内容", required=True)
