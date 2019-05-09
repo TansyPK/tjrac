@@ -21,13 +21,13 @@ class SelectQuestionCreateViewSet(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = {
-            "title": request.POST.get('title'),
-            "content": request.POST.get('content'),
-            "type": int(request.POST.get('type')) if request.POST.get('type') else None,
-            "correct_code": request.POST.get('correct_code'),
-            "analyzations": request.POST.get('correct_code'),
-            "score": int(request.POST.get('score')) if request.POST.get('score') else None,
-            "level": int(request.POST.get('level')) if request.POST.get('level') else None,
+            "title": request.data.get('title'),
+            "content": request.data.get('content'),
+            "type": int(request.data.get('type')) if request.data.get('type') else None,
+            "correct_code": request.data.get('correct_code'),
+            "analyzations": request.data.get('correct_code'),
+            "score": int(request.data.get('score')) if request.data.get('score') else None,
+            "level": int(request.data.get('level')) if request.data.get('level') else None,
             "created_time": None,
             "updated_time": None,
         }
