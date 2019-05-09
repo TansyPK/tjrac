@@ -161,7 +161,7 @@ class SelectAnswersDetailViewSet(generics.ListAPIView):
 
 class NormalQuestionsDetailViewSet(generics.ListAPIView):
     """
-    普通问题列表获取(type获取)
+    普通问题列表获取(全部获取)
     """
     serializer_class = NormalQuestionDetailSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
@@ -201,7 +201,7 @@ class NormalQuestionsDetailViewSet(generics.ListAPIView):
         return Response(res)
 
     def get_queryset(self):
-        return NormalQuestions.objects.filter(type=self.request.GET.get('type'))
+        return NormalQuestions.objects.all()
 
 
 class NormalQuestionsDetailByIdViewSet(generics.ListAPIView):
