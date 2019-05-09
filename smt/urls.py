@@ -45,7 +45,7 @@ urlpatterns = [
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 闯关选择题
     # re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答（已集成至获取问题接口）
     re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 讨论区列表
-    # re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 讨论区回答列表 (已集成至获取讨论区问题接口)
+    re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 讨论区回答详情接口
     re_path('^create/select/operation/$', SelectOperationCreateViewSet.as_view()),  # 闯关记录接口
     re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),  # 闯关记录列表接口
     re_path('^list/normal/operations/$', NormalOperationDetailViewSet.as_view()),  # 讨论区记录列表接口
