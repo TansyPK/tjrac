@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+import datetime
 import os
 import sys
 
@@ -155,6 +155,11 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),
+}
+
+JWT_AUTH = {
+ # 指明token的有效期
+ 'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
 
 CORS_ORIGIN_ALLOW_ALL = True

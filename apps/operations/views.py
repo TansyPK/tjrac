@@ -48,11 +48,11 @@ class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         data = {
             'selector_id': request.user.id,
-            'teacher_id': int(request.POST.get('teacher_id')),
-            'status': int(request.POST.get('status')),
-            'room': int(request.POST.get('room')),
-            'interview_time': request.POST.get('interview_time'),
-            'end_time': request.POST.get('end_time'),
+            'teacher_id': int(request.data.get('teacher_id')),
+            'status': int(request.data.get('status')),
+            'room': int(request.data.get('room')),
+            'interview_time': request.data.get('interview_time'),
+            'end_time': request.data.get('end_time'),
             'created_time': None,
             'updated_time': None
         }
