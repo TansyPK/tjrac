@@ -41,6 +41,7 @@ class InformationsListViewSet(generics.ListAPIView):
                 answer_serializer.is_valid(raise_exception=True)
                 answers.append(answer_serializer.data)
             question_serializer = SelectQuestionDetailSerializer(data={
+                "id": question.id,
                 "title": question.title,
                 "content": question.content,
                 "type": question.type,

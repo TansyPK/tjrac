@@ -123,6 +123,7 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
                 answer_serializer.is_valid(raise_exception=True)
                 answers.append(answer_serializer.data)
             serializer = SelectQuestionDetailSerializer(data={
+                "id": i.id,
                 "title": i.title,
                 "content": i.content,
                 "type": i.type,
