@@ -35,6 +35,7 @@ class InformationCommentSerializer(serializers.ModelSerializer):
 
 
 class InformationsDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField(label="id", help_text="id", required=True)
     question = serializers.DictField(label="问题信息", help_text="问题信息", required=True)
     answers = serializers.ListField(label="回答列表", help_text="回答列表", required=True)
     content = serializers.CharField(label="内容", help_text="内容", required=True)

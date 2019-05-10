@@ -71,6 +71,7 @@ class InformationsListViewSet(generics.ListAPIView):
             serializer = InformationsDetailSerializer(data={
                 "question": question_serializer.data,
                 "answers": information_answers,
+                "id": i.id,
                 "content": i.content,
                 "score": i.score,
                 "type": i.type,
