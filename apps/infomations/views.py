@@ -7,6 +7,7 @@ from infomations.models import Information, InformationComment
 from infomations.serializers import InformationSerializer, InformationCommentSerializer, InformationsDetailSerializer, \
     InformationsCommentSerializer
 from qa.serializers import SelectAnswerDetailSerializer, SelectQuestionDetailSerializer
+from users.models import UserProfile
 
 
 class InformationsCreateViewSet(generics.CreateAPIView):
@@ -55,8 +56,10 @@ class InformationsListViewSet(generics.ListAPIView):
             })
             question_serializer.is_valid(raise_exception=True)
             for k in InformationComment.objects.filter(information_id=i.id):
+                k_user = UserProfile.objects.get(id=k.owner)
                 comment_serializer = InformationsCommentSerializer(data={
                     "owner": k.owner,
+                    "username": k_user.username,
                     "information_id": k.information_id,
                     "content": k.content,
                     "created_time": k.created_time,
@@ -64,9 +67,14 @@ class InformationsListViewSet(generics.ListAPIView):
                 })
                 comment_serializer.is_valid(raise_exception=True)
                 information_answers.append(comment_serializer.data)
+            user = UserProfile.objects.get(id=i.owner)
             serializer = InformationsDetailSerializer(data={
                 "question": question_serializer.data,
                 "answers": information_answers,
+                "content": i.content,
+                "score": i.score,
+                "type": i.type,
+                "username": user.username,
                 "created_time": i.created_time,
                 "updated_time": i.updated_time
             })

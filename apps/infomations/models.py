@@ -6,6 +6,9 @@ from django.db import models
 class Information(models.Model):
     owner = models.IntegerField()
     question_id = models.IntegerField()
+    content = models.CharField(max_length=100, default="test")
+    score = models.IntegerField(default=0)
+    type = models.IntegerField(default=0)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
