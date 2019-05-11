@@ -82,6 +82,18 @@ class SelectQuestionDetailSerializer(serializers.Serializer):
     updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
 
 
+class SelectAnswersDetailSerializer(serializers.Serializer):
+    """
+    先择题选项详情
+    """
+    id = serializers.IntegerField(label="id", help_text="id", required=True)
+    question_id = serializers.IntegerField(label="question_id", help_text="question_id", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    select_code = serializers.CharField(label="回答编号", help_text="回答的编号", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+
 class SelectAnswerDetailSerializer(serializers.ModelSerializer):
 
     class Meta:

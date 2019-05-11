@@ -6,7 +6,7 @@ from qa.models import SelectQuestions, SelectAnswers
 from infomations.models import Information, InformationComment
 from infomations.serializers import InformationSerializer, InformationCommentSerializer, InformationsDetailSerializer, \
     InformationsCommentSerializer
-from qa.serializers import SelectAnswerDetailSerializer, SelectQuestionDetailSerializer
+from qa.serializers import SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, SelectAnswersDetailSerializer
 from users.models import UserProfile
 
 
@@ -32,7 +32,8 @@ class InformationsListViewSet(generics.ListAPIView):
             information_answers= []
             question = SelectQuestions.objects.get(id=i.question_id)
             for j in SelectAnswers.objects.filter(question_id=i.question_id):
-                answer_serializer = SelectAnswerDetailSerializer(data={
+                answer_serializer = SelectAnswersDetailSerializer(data={
+                    "id": j.id,
                     "question_id": j.question_id,
                     "content": j.content,
                     "select_code": j.select_code,

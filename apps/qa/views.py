@@ -7,7 +7,8 @@ from users.models import UserProfile
 from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, \
     NormalAnswerSerializer, \
     SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, \
-    NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer, NormalAnswersDetailSerializer
+    NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer, NormalAnswersDetailSerializer, \
+    SelectAnswersDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -113,7 +114,8 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
         for i in queryset:
             answers = []
             for j in SelectAnswers.objects.filter(question_id=i.id):
-                answer_serializer = SelectAnswerDetailSerializer(data={
+                answer_serializer = SelectAnswersDetailSerializer(data={
+                    "id": j.id,
                     "question_id": j.question_id,
                     "content": j.content,
                     "select_code": j.select_code,
