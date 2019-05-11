@@ -19,11 +19,11 @@ class SelectOperationCreateViewSet(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = {
-            "question_id": int(request.POST.get('question_id')) if request.POST.get('question_id') else None,
-            "answer_id": int(request.POST.get('answer_id')) if request.POST.get('answer_id') else None,
+            "question_id": int(request.data.get('question_id')) if request.data.get('question_id') else None,
+            "answer_id": int(request.data.get('answer_id')) if request.data.get('answer_id') else None,
             "user_id": request.user.id,
-            "score": int(request.POST.get('score')) if request.POST.get('score') else None,
-            'is_correct': bool(int(request.POST.get('is_correct')) if request.POST.get('is_correct') else False)
+            "score": int(request.data.get('score')) if request.data.get('score') else None,
+            'is_correct': bool(int(request.data.get('is_correct'))) if request.data.get('is_correct') else False
         }
         user = UserProfile.objects.get(id=request.user.id)
         if data['is_correct']:
