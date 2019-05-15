@@ -59,6 +59,12 @@ class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
         serializer_one = SelectTeacherOperationsSerializers(data=data)
         serializer_one.is_valid(raise_exception=True)
         self.perform_create(serializer_one)
+
+        # 给用户添加 10 积分
+        user = UserProfile.objects.get(id=request.user.id)
+        user.score += 10
+        user.save()
+
         headers = self.get_success_headers(serializer_one.data)
         return Response(serializer_one.data, status=status.HTTP_201_CREATED, headers=headers)
 

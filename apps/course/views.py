@@ -12,7 +12,7 @@ from users.models import UserProfile
 
 class CourseCreateViewSet(generics.CreateAPIView):
     """
-    选择题创建
+    课程创建
     """
     serializer_class = CourseSerializer
     # authentication_classes = (JSONWebTokenAuthentication,)
