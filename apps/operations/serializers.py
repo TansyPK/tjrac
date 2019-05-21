@@ -97,7 +97,21 @@ class SelectTeacherOperationsDetailSerializers(serializers.Serializer):
 
 class RoolBackSelectTeacherSerializers(serializers.Serializer):
     """
-    撤销预约课程
+    撤销预约
     """
     order_id = serializers.IntegerField(label="预约id", help_text="预约id", required=True)
+    course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)
+
+
+class CompleteSelectTeacherSerializers(serializers.Serializer):
+    """
+    完成课程
+    """
+    course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)
+
+
+class CancleSelectTeacherSerializers(serializers.Serializer):
+    """
+    完成课程
+    """
     course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)

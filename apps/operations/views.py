@@ -6,7 +6,7 @@ from operations.models import SelectOperations, NormalOperations, SelectTeacherO
 from operations.serializers import SelectOperationsSerializers, \
     SelectOperationsDetailSerializers, NormalOperationsDetailSerializers, \
     SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers, SelectCommentOperationsSerializers, \
-    RoolBackSelectTeacherSerializers
+    RoolBackSelectTeacherSerializers, CompleteSelectTeacherSerializers, CancleSelectTeacherSerializers
 from qa.models import SelectQuestions
 from rest_framework.response import Response
 from rest_framework import status
@@ -225,7 +225,7 @@ class SelectCommentOperationsDetailViewSet(generics.ListAPIView):
 
 class RoolBackSelectTeacherViewSet(generics.UpdateAPIView):
     """
-    撤销课程
+    撤销预约
     """
     serializer_class = RoolBackSelectTeacherSerializers
     # authentication_classes = (JSONWebTokenAuthentication, )
@@ -245,5 +245,73 @@ class RoolBackSelectTeacherViewSet(generics.UpdateAPIView):
         order.status = 0
         order.save()
 
-        return Response({"status": True, "code": 200})
+        return Response({"status": True, "code": 200, "data":{
+            "course": {
+                "status": course.status,
+            },
+            "order": {
+                "status": order.status,
+            }
+        }})
 
+
+class CompleteSelectTeacherViewSet(generics.UpdateAPIView):
+    """
+    完成课程
+    """
+    serializer_class = CompleteSelectTeacherSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def update(self, request, *args, **kwargs):
+        serializer = CompleteSelectTeacherSerializers(data={
+            "course_id": int(request.data.get('course_id'))
+        })
+        serializer.is_valid(raise_exception=True)
+
+        course = Course.objects.get(id=serializer.data.get('course_id'))
+        course.status = 2
+        course.save()
+
+        order = SelectTeacherOperations.objects.get(course_id=serializer.data.get('course_id'))
+        order.status = 2
+        order.save()
+
+        return Response({"status": True, "code": 200, "data":{
+            "course": {
+                "status": course.status,
+            },
+            "order": {
+                "status": order.status,
+            }
+        }})
+
+
+class CancleSelectTeacherViewSet(generics.UpdateAPIView):
+    """
+    删除课程
+    """
+    serializer_class = CancleSelectTeacherSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def update(self, request, *args, **kwargs):
+        serializer = CancleSelectTeacherSerializers(data={
+            "course_id": int(request.data.get('course_id'))
+        })
+        serializer.is_valid(raise_exception=True)
+
+        course = Course.objects.get(id=serializer.data.get('course_id'))
+        course.status = 0
+        course.save()
+
+        order = SelectTeacherOperations.objects.get(course_id=serializer.data.get('course_id'))
+        order.status = 0
+        order.save()
+
+        return Response({"status": True, "code": 200, "data":{
+            "course": {
+                "status": course.status,
+            },
+            "order": {
+                "status": order.status,
+            }
+        }})
