@@ -64,6 +64,8 @@ class UserDetailUpdateViewSet(generics.UpdateAPIView):
 
         user = UserProfile.objects.get(id=instance.id)
         user.score += 10
+        if user.type == 0:
+            user.type = 2
         user.save()
 
         if getattr(instance, '_prefetched_objects_cache', None):

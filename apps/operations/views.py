@@ -163,7 +163,7 @@ class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
         return Response(queryset)
 
     def get_queryset(self):
-        if self.request.user.type == 0:
+        if self.request.user.type in (0, 2):
             return SelectTeacherOperations.objects.filter(selector_id=self.request.user.id)
         else:
             return SelectTeacherOperations.objects.filter(teacher_id=self.request.user.id)
