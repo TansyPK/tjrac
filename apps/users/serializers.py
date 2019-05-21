@@ -13,6 +13,15 @@ class UserDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserDetailCompleteSerializer(serializers.ModelSerializer):
+    """
+    用户详情
+    """
+    class Meta:
+        model = User
+        fields = ('name', 'birthday', 'gender', 'mobile', 'email')
+
+
 class UserRegSerializer(serializers.ModelSerializer):
     """
     用户登录注册

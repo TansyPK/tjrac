@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from apps.users.serializers import UserRegSerializer, UserDetailSerializer
+from apps.users.serializers import UserRegSerializer, UserDetailSerializer, UserDetailCompleteSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
 from rest_framework import generics
+
+from users.models import UserProfile
 
 User = get_user_model()
 
@@ -46,3 +48,33 @@ class UsersDetailByTypeViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         return User.objects.filter(type=self.request.GET.get('type'))
+
+
+class UserDetailUpdateViewSet(generics.UpdateAPIView):
+    serializer_class = UserDetailCompleteSerializer
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        user = UserProfile.objects.get(id=instance.id)
+        user.score += 10
+        user.save()
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def get_object(self):
+        return self.request.user
