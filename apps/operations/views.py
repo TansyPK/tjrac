@@ -145,7 +145,7 @@ class NormalOperationDetailViewSet(generics.ListAPIView):
 
 class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
     """
-    学生预约小老师列表
+    我的预约
     """
     serializer_class = SelectTeacherOperationsDetailSerializers
     # authentication_classes = (JSONWebTokenAuthentication, )
@@ -174,10 +174,41 @@ class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
         return Response(queryset)
 
     def get_queryset(self):
-        if self.request.user.type in (0, 2):
-            return SelectTeacherOperations.objects.filter(selector_id=self.request.user.id)
-        else:
-            return SelectTeacherOperations.objects.filter(teacher_id=self.request.user.id)
+        return SelectTeacherOperations.objects.filter(selector_id=self.request.user.id)
+
+
+class SelectStudentOperationsDetailViewSet(generics.ListAPIView):
+    """
+    我的课程
+    """
+    serializer_class = SelectTeacherOperationsDetailSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            teacher = UserProfile.objects.get(id=i.teacher_id)
+            student = UserProfile.objects.get(id=i.selector_id)
+            serializer = SelectTeacherOperationsDetailSerializers(data={
+                'id': i.id,
+                'course_id': i.course_id,
+                'selector_name': student.username,
+                'teacher_name':  teacher.username,
+                'room': i.room,
+                'status': i.status
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(queryset)
+
+    def get_queryset(self):
+        return SelectTeacherOperations.objects.filter(teacher_id=self.request.user.id)
 
 
 class SelectCommentOperationsDetailViewSet(generics.ListAPIView):
