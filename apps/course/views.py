@@ -2,7 +2,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 
 from course.models import Course, CourseCategory
-from course.serializers import CourseSerializer, CourseCategorySerializer
+from course.serializers import CourseSerializer, CourseCategorySerializer, CourseDetailSerializer
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -25,6 +25,7 @@ class CourseCreateViewSet(generics.CreateAPIView):
             "room": int(request.data.get('room')) if request.data.get('room') else 0,
             "score": int(request.data.get('score')) if request.data.get('score') else 0,
             "status": int(request.data.get('status')) if request.data.get('status') else 0,
+            "type": int(request.data.get('type')) if request.data.get('type') else 0,
             "interview_time": request.data.get('interview_time'),
             "end_time": request.data.get('end_time'),
             "created_time": None,
@@ -44,8 +45,36 @@ class CourseCreateViewSet(generics.CreateAPIView):
 
 
 class CourseListViewSet(generics.ListAPIView):
-    serializer_class = CourseSerializer
+    serializer_class = CourseDetailSerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            course_category = CourseCategory.objects.get(type=i.type)
+            course_serializer = CourseDetailSerializer(data={
+                "owner": i.owner,
+                "title": i.title,
+                "content": i.content,
+                "room": i.room,
+                "score": i.score,
+                "status": i.status,
+                "type": i.type,
+                "type_name": course_category.type_name if course_category else "",
+                "interview_time": i.interview_time,
+                "end_time": i.end_time,
+                "created_time": i.created_time,
+                "updated_time": i.updated_time
+            })
+            course_serializer.is_valid(raise_exception=True)
+            res.append(course_serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(res)
 
     def get_queryset(self):
         return Course.objects.all()
