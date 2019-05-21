@@ -18,6 +18,7 @@ class NormalOperations(models.Model):
 
 
 class SelectTeacherOperations(models.Model):
+    course_id = models.IntegerField(default=0)
     selector_id = models.IntegerField()
     teacher_id = models.IntegerField()
     room = models.IntegerField()

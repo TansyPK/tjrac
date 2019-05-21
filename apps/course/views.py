@@ -54,6 +54,7 @@ class CourseListViewSet(generics.ListAPIView):
         for i in queryset:
             course_category = CourseCategory.objects.get(type=i.type)
             course_serializer = CourseDetailSerializer(data={
+                "id": i.id,
                 "owner": i.owner,
                 "title": i.title,
                 "content": i.content,
@@ -77,7 +78,7 @@ class CourseListViewSet(generics.ListAPIView):
         return Response(res)
 
     def get_queryset(self):
-        return Course.objects.all()
+        return Course.objects.filter(status=1)
 
 
 class CourseCategoryCreateViewSet(generics.CreateAPIView):

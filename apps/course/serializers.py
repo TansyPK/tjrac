@@ -39,6 +39,7 @@ class CourseDetailSerializer(serializers.Serializer):
     """
     课程详细列表
     """
+    id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)
     owner = serializers.IntegerField(label="课程拥有者", help_text="课程所有者id", required=True)
     title = serializers.CharField(label="课程标题", help_text="课程标题", required=True)
     content = serializers.CharField(label="课程内容", help_text="课程简介", required=True)

@@ -35,6 +35,7 @@ class SelectTeacherOperationsSerializers(serializers.ModelSerializer):
     """
     学生预约小老师操作
     """
+    course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True, allow_null=False)
     selector_id = serializers.IntegerField(label="学生编号", help_text="学生id", required=True, allow_null=False)
     teacher_id = serializers.IntegerField(label="老师编号", help_text="老师id", required=True, allow_null=False)
     status = serializers.IntegerField(label="邀约状态", help_text="0:失效 1:生效", required=True, allow_null=False)
@@ -86,7 +87,17 @@ class SelectTeacherOperationsDetailSerializers(serializers.Serializer):
     """
     学生预约小老师详情
     """
+    id = serializers.IntegerField(label="预约id", help_text="预约id", required=True)
+    course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)
     selector_name = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
     teacher_name = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
     room = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
     status = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
+
+
+class RoolBackSelectTeacherSerializers(serializers.Serializer):
+    """
+    撤销预约课程
+    """
+    order_id = serializers.IntegerField(label="预约id", help_text="预约id", required=True)
+    course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)

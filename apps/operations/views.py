@@ -1,9 +1,12 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
+
+from course.models import Course
 from operations.models import SelectOperations, NormalOperations, SelectTeacherOperations, SelectCommentOperations
-from operations.serializers import SelectOperationsSerializers,\
-    SelectOperationsDetailSerializers, NormalOperationsDetailSerializers,\
-    SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers, SelectCommentOperationsSerializers
+from operations.serializers import SelectOperationsSerializers, \
+    SelectOperationsDetailSerializers, NormalOperationsDetailSerializers, \
+    SelectTeacherOperationsSerializers, SelectTeacherOperationsDetailSerializers, SelectCommentOperationsSerializers, \
+    RoolBackSelectTeacherSerializers
 from qa.models import SelectQuestions
 from rest_framework.response import Response
 from rest_framework import status
@@ -47,6 +50,7 @@ class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = {
+            'course_id': int(request.data.get('course_id')),
             'selector_id': request.user.id,
             'teacher_id': int(request.data.get('teacher_id')),
             'status': int(request.data.get('status')),
@@ -59,6 +63,11 @@ class SelectTeacherOperationCreateViewSet(generics.CreateAPIView):
         serializer_one = SelectTeacherOperationsSerializers(data=data)
         serializer_one.is_valid(raise_exception=True)
         self.perform_create(serializer_one)
+
+        # 预约课程改变状态
+        course = Course.objects.get(id=int(request.data.get('course_id')))
+        course.status = 0
+        course.save()
 
         # 给用户添加 10 积分
         user = UserProfile.objects.get(id=request.user.id)
@@ -148,6 +157,8 @@ class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
             teacher = UserProfile.objects.get(id=i.teacher_id)
             student = UserProfile.objects.get(id=i.selector_id)
             serializer = SelectTeacherOperationsDetailSerializers(data={
+                'id': i.id,
+                'course_id': i.course_id,
                 'selector_name': student.username,
                 'teacher_name':  teacher.username,
                 'room': i.room,
@@ -179,3 +190,29 @@ class SelectCommentOperationsDetailViewSet(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         self.queryset = SelectCommentOperations.objects.filter(question_id=request.GET.get('question_id'))
         return self.list(request, *args, **kwargs)
+
+
+class RoolBackSelectTeacherViewSet(generics.UpdateAPIView):
+    """
+    撤销课程
+    """
+    serializer_class = RoolBackSelectTeacherSerializers
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def update(self, request, *args, **kwargs):
+        serializer = RoolBackSelectTeacherSerializers(data={
+            "course_id": int(request.data.get('course_id')),
+            "order_id": int(request.data.get('order_id'))
+        })
+        serializer.is_valid(raise_exception=True)
+
+        course = Course.objects.get(id=serializer.data.get('course_id'))
+        course.status = 1
+        course.save()
+
+        order = SelectTeacherOperations.objects.get(id=serializer.data.get('order_id'))
+        order.status = 0
+        order.save()
+
+        return Response({"status": True, "code": 200})
+

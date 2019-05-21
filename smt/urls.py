@@ -22,7 +22,8 @@ from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewS
     NormalQuestionsDetailViewSet, NormalQuestionsDetailByIdViewSet
 from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
-    SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet
+    SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet, \
+    RoolBackSelectTeacherViewSet
 from apps.course.views import CourseCreateViewSet, CourseListViewSet, CourseCategoryCreateViewSet, \
     CourseCategoryListViewSet
 from rest_framework_jwt.views import obtain_jwt_token
@@ -69,6 +70,7 @@ urlpatterns = [
     path('create/course/', CourseCreateViewSet.as_view()),  # 创建小老师课程接口
     path('create/course/category/', CourseCategoryCreateViewSet.as_view()),  # 创建小老师课程类别接口
     path('list/course/category/', CourseCategoryListViewSet.as_view()),  # 小老师课程类别列表接口
+    path('put/course/order/', RoolBackSelectTeacherViewSet.as_view()),  # 小老师课程撤销接口
     re_path('^create/select/teacher/$', SelectTeacherOperationCreateViewSet.as_view()),  # 预约接口
     re_path('^list/select/teacher/$', SelectTeacherOperationsDetailViewSet.as_view()),  # 我的预约
     re_path('^list/courses/$', CourseListViewSet.as_view()),  # 小老师课程列表
