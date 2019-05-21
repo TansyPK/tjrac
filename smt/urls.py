@@ -25,7 +25,7 @@ from apps.operations.views import SelectOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet, \
     RoolBackSelectTeacherViewSet, SelectStudentOperationsDetailViewSet
 from apps.course.views import CourseCreateViewSet, CourseListViewSet, CourseCategoryCreateViewSet, \
-    CourseCategoryListViewSet
+    CourseCategoryListViewSet, MyCourseListViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 from infomations.views import InformationsCreateViewSet, InformationCommentsCreateViewSet, InformationsListViewSet
@@ -74,6 +74,7 @@ urlpatterns = [
     re_path('^create/select/teacher/$', SelectTeacherOperationCreateViewSet.as_view()),  # 预约接口
     re_path('^list/select/teacher/$', SelectTeacherOperationsDetailViewSet.as_view()),  # 我的预约
     re_path('^list/select/student/$', SelectStudentOperationsDetailViewSet.as_view()),  # 我的课程
+    re_path('^list/course/mine/$', MyCourseListViewSet.as_view()),  # 我发布的课程
     re_path('^list/courses/$', CourseListViewSet.as_view()),  # 小老师课程列表
 
     # 荣誉榜

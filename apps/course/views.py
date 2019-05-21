@@ -81,6 +81,43 @@ class CourseListViewSet(generics.ListAPIView):
         return Course.objects.filter(status=1)
 
 
+class MyCourseListViewSet(generics.ListAPIView):
+    serializer_class = CourseDetailSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            course_category = CourseCategory.objects.get(type=i.type)
+            course_serializer = CourseDetailSerializer(data={
+                "id": i.id,
+                "owner": i.owner,
+                "title": i.title,
+                "content": i.content,
+                "room": i.room,
+                "score": i.score,
+                "status": i.status,
+                "type": i.type,
+                "type_name": course_category.type_name if course_category else "",
+                "interview_time": i.interview_time,
+                "end_time": i.end_time,
+                "created_time": i.created_time,
+                "updated_time": i.updated_time
+            })
+            course_serializer.is_valid(raise_exception=True)
+            res.append(course_serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(res)
+
+    def get_queryset(self):
+        return Course.objects.filter(status=1, owner=self.request.user.id)
+
+
 class CourseCategoryCreateViewSet(generics.CreateAPIView):
     serializer_class = CourseCategorySerializer
     # authentication_classes = (JSONWebTokenAuthentication, )
