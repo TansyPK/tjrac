@@ -18,3 +18,11 @@ class Course(models.Model):
     end_time = models.DateTimeField(default=now())
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+
+class CourseCategory(models.Model):
+    """
+    小老师课程类别映射表
+    """
+    type = models.IntegerField()
+    type_name = models.CharField(max_length=100)

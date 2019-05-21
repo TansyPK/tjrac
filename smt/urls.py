@@ -23,37 +23,55 @@ from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewS
 from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet
-from apps.course.views import CourseCreateViewSet, CourseListViewSet
+from apps.course.views import CourseCreateViewSet, CourseListViewSet, CourseCategoryCreateViewSet, \
+    CourseCategoryListViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
 from infomations.views import InformationsCreateViewSet, InformationCommentsCreateViewSet, InformationsListViewSet
 
 urlpatterns = [
+    # 后台
     path('xadmin/', xadmin.site.urls),  # 资源后台管理
+
+    # 登陆注册
     path('login/', obtain_jwt_token),  # 登陆接口
     path('signup/', UserCreateViewSet.as_view()),  # 注册接口
+
+    # 用户个人页
     path('user/detail/', UserDetailViewSet.as_view()),  # 用户个人信息接口
     path('update/user/detail/', UserDetailUpdateViewSet.as_view()),  # 用户个人信息更新接口
     re_path('^users/detail/$', UsersDetailByTypeViewSet.as_view()),  # 用户列表接口（学生列表、教师列表）
-    path('create/normal/question/', NormalQuestionCreateViewSet.as_view()),  # 创建讨论区问题接口
+    re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view()),  # 我的讨论区发布
+
+    # 闯关答题
     path('create/select/question/', SelectQuestionCreateViewSet.as_view()),  # 创建闯关问题接口（系统）
-    path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),  # 创建讨论区问题回答
     path('create/select/answer/', SelectAnswerCreateViewSet.as_view()),  # 创建闯关回答接口（系统）
     path('create/select/comment/', SelectCommentOperationsCreateViewSet.as_view()),  # 创建选择评论接口
-    path('create/course/', CourseCreateViewSet.as_view()),  # 创建小老师课程接口
-    path('create/information/', InformationsCreateViewSet.as_view()),  # 创建邀约讲解
-    path('create/information/comment/', InformationCommentsCreateViewSet.as_view()),  # 创建邀约讲解回答
+    re_path('^list/select/comment/$', SelectCommentOperationsDetailViewSet.as_view()),  # 选择题评论列表
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 闯关选择题
     # re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答（已集成至获取问题接口）
-    re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 讨论区列表
-    re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 讨论区回答详情接口
     re_path('^create/select/operation/$', SelectOperationCreateViewSet.as_view()),  # 闯关记录接口
     re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),  # 闯关记录列表接口
+
+    # 邀约讲解
+    path('create/information/', InformationsCreateViewSet.as_view()),  # 创建邀约讲解
+    path('create/information/comment/', InformationCommentsCreateViewSet.as_view()),  # 创建邀约讲解回答
+    re_path('^list/informations/$', InformationsListViewSet.as_view()),  # 讲解邀约列表
+
+    # 讨论区
+    path('create/normal/question/', NormalQuestionCreateViewSet.as_view()),  # 创建讨论区问题接口
+    path('create/normal/answer/', NormalAnswerCreateViewSet.as_view()),  # 创建讨论区问题回答
+    re_path('^list/normal/questions/$', NormalQuestionsDetailViewSet.as_view()),  # 讨论区列表
+    re_path('^list/normal/answers/$', NormalAnswersDetailViewSet.as_view()),  # 讨论区回答详情接口
     re_path('^list/normal/operations/$', NormalOperationDetailViewSet.as_view()),  # 讨论区记录列表接口
+
+    # 小老师
+    path('create/course/', CourseCreateViewSet.as_view()),  # 创建小老师课程接口
+    path('create/course/category/', CourseCategoryCreateViewSet.as_view()),  # 创建小老师课程类别接口
+    path('list/course/category/', CourseCategoryListViewSet.as_view()),  # 小老师课程类别列表接口
     re_path('^create/select/teacher/$', SelectTeacherOperationCreateViewSet.as_view()),  # 预约接口
     re_path('^list/select/teacher/$', SelectTeacherOperationsDetailViewSet.as_view()),  # 我的预约
-    re_path('^list/select/comment/$', SelectCommentOperationsDetailViewSet.as_view()),  # 选择题评论列表
     re_path('^list/courses/$', CourseListViewSet.as_view()),  # 小老师课程列表
-    re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view()),  # 我的发布
-    re_path('^list/informations/$', InformationsListViewSet.as_view()),  # 讲解邀约列表
+
+    # 荣誉榜
 ]

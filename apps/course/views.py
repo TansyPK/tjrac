@@ -1,8 +1,8 @@
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 
-from course.models import Course
-from course.serializers import CourseSerializer
+from course.models import Course, CourseCategory
+from course.serializers import CourseSerializer, CourseCategorySerializer
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -49,3 +49,16 @@ class CourseListViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         return Course.objects.all()
+
+
+class CourseCategoryCreateViewSet(generics.CreateAPIView):
+    serializer_class = CourseCategorySerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+
+class CourseCategoryListViewSet(generics.ListAPIView):
+    serializer_class = CourseCategorySerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def get_queryset(self):
+        return CourseCategory.objects.all()

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from course.models import Course
+from course.models import Course, CourseCategory
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -19,4 +19,16 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
+        fields = '__all__'
+
+
+class CourseCategorySerializer(serializers.ModelSerializer):
+    """
+    创建课程
+    """
+    type = serializers.IntegerField(label="课程类别key", help_text="课程类别key", required=True)
+    type_name = serializers.CharField(label="课程类别", help_text="课程类别对应中文名", required=True)
+
+    class Meta:
+        model = CourseCategory
         fields = '__all__'
