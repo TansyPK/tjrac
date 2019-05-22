@@ -27,3 +27,18 @@ class CourseCategory(models.Model):
     """
     type = models.IntegerField()
     type_name = models.CharField(max_length=100)
+
+
+class CourseFeedBack(models.Model):
+    """
+    小老师课程反馈
+    """
+    order_id = models.IntegerField()
+    course_id = models.IntegerField()
+    selector_id = models.IntegerField()
+    teacher_id = models.IntegerField()
+    score = models.IntegerField()
+    content = models.TextField()
+    status = models.IntegerField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)

@@ -89,6 +89,8 @@ class SelectTeacherOperationsDetailSerializers(serializers.Serializer):
     """
     id = serializers.IntegerField(label="预约id", help_text="预约id", required=True)
     course_id = serializers.IntegerField(label="课程id", help_text="课程id", required=True)
+    selector_id = serializers.IntegerField(label="学生id", help_text="学生id", required=True)
+    teacher_id = serializers.IntegerField(label="教师id", help_text="教师id", required=True)
     selector_name = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
     teacher_name = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)
     room = serializers.CharField(label="学生姓名", help_text="学生姓名", required=True, allow_null=False)

@@ -159,6 +159,8 @@ class SelectTeacherOperationsDetailViewSet(generics.ListAPIView):
             serializer = SelectTeacherOperationsDetailSerializers(data={
                 'id': i.id,
                 'course_id': i.course_id,
+                'selector_id': i.selector_id,
+                'teacher_id': i.teacher_id,
                 'selector_name': student.username,
                 'teacher_name':  teacher.username,
                 'room': i.room,
