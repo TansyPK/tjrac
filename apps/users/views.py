@@ -48,7 +48,7 @@ class UsersDetailByTypeViewSet(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return User.objects.filter(type=self.request.GET.get('type'))
+        return User.objects.filter(type=self.request.GET.get('type')).order_by('-score')
 
 
 class UserDetailUpdateViewSet(generics.UpdateAPIView):
@@ -85,8 +85,8 @@ class UserDetailUpdateViewSet(generics.UpdateAPIView):
 
 class UserPasswordUpdateViewSet(generics.UpdateAPIView):
     serializer_class = UserUpdatePasswordSerializer
-    # authentication_classes = (JSONWebTokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -107,8 +107,8 @@ class UserPasswordUpdateViewSet(generics.UpdateAPIView):
 
 class UserToSmallTeacherViewSet(generics.UpdateAPIView):
     serializer_class = UserToSmallTeacherSerializer
-    # authentication_classes = (JSONWebTokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

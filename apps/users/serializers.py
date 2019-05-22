@@ -15,7 +15,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 class UserDetailCompleteSerializer(serializers.ModelSerializer):
     """
-    用户详情
+    用户修改详情
     """
     class Meta:
         model = User

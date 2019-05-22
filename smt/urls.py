@@ -45,7 +45,6 @@ urlpatterns = [
     path('update/user/detail/', UserDetailUpdateViewSet.as_view()),  # 用户个人信息更新接口
     path('update/user/password/', UserPasswordUpdateViewSet.as_view()),  # 用户修改密码接口
     path('update/user/smt/', UserToSmallTeacherViewSet.as_view()),  # 用户申请小老师接口
-    re_path('^users/detail/$', UsersDetailByTypeViewSet.as_view()),  # 用户列表接口（学生列表、教师列表）
     re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view()),  # 我的讨论区发布
 
     # 闯关答题
@@ -86,4 +85,5 @@ urlpatterns = [
     re_path('^list/course/feedback/$', CourseFeedBackListViewSet.as_view()),  # 我的评价
 
     # 荣誉榜
+    re_path('^users/detail/$', UsersDetailByTypeViewSet.as_view()),  # 荣誉榜 type 0 学生 type 1 小老师
 ]
