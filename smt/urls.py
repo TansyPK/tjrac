@@ -17,7 +17,7 @@ import xadmin
 
 from django.urls import path, re_path
 from apps.users.views import UserCreateViewSet, UserDetailViewSet, UsersDetailByTypeViewSet, UserDetailUpdateViewSet, \
-    UserPasswordUpdateViewSet
+    UserPasswordUpdateViewSet, UserToSmallTeacherViewSet
 from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet, \
     SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet, \
     NormalQuestionsDetailViewSet, NormalQuestionsDetailByIdViewSet
@@ -44,6 +44,7 @@ urlpatterns = [
     path('user/detail/', UserDetailViewSet.as_view()),  # 用户个人信息接口
     path('update/user/detail/', UserDetailUpdateViewSet.as_view()),  # 用户个人信息更新接口
     path('update/user/password/', UserPasswordUpdateViewSet.as_view()),  # 用户修改密码接口
+    path('update/user/smt/', UserToSmallTeacherViewSet.as_view()),  # 用户申请小老师接口
     re_path('^users/detail/$', UsersDetailByTypeViewSet.as_view()),  # 用户列表接口（学生列表、教师列表）
     re_path('^list/me/questions/$', NormalQuestionsDetailByIdViewSet.as_view()),  # 我的讨论区发布
 

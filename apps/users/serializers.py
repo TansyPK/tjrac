@@ -58,3 +58,12 @@ class UserUpdatePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(
         style={'input_type': 'password'}, label="新密码"
     )
+
+
+class UserToSmallTeacherSerializer(serializers.ModelSerializer):
+    """
+    用户详情
+    """
+    class Meta:
+        model = User
+        fields = ('type', )
