@@ -1,3 +1,5 @@
+import random
+
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 
@@ -109,6 +111,7 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
     # authentication_classes = (JSONWebTokenAuthentication, )
 
     def list(self, request, *args, **kwargs):
+        random_mode = request.GET.get('mode') == 'random'
         res = []
         queryset = self.filter_queryset(self.get_queryset())
         for i in queryset:
@@ -124,6 +127,8 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
                 })
                 answer_serializer.is_valid(raise_exception=True)
                 answers.append(answer_serializer.data)
+                if random_mode:
+                    random.shuffle(answers)
             serializer = SelectQuestionDetailSerializer(data={
                 "id": i.id,
                 "title": i.title,
@@ -139,6 +144,8 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
             })
             serializer.is_valid(raise_exception=True)
             res.append(serializer.data)
+        if random_mode:
+            random.shuffle(res)
         queryset = res
         page = self.paginate_queryset(queryset)
         if page is not None:
