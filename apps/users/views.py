@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from apps.users.serializers import UserRegSerializer, UserDetailSerializer, UserDetailCompleteSerializer
+from apps.users.serializers import UserRegSerializer, UserDetailSerializer, UserDetailCompleteSerializer, \
+    UserUpdatePasswordSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
@@ -77,6 +78,28 @@ class UserDetailUpdateViewSet(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         serializer.save()
+
+    def get_object(self):
+        return self.request.user
+
+
+class UserPasswordUpdateViewSet(generics.UpdateAPIView):
+    serializer_class = UserUpdatePasswordSerializer
+    # authentication_classes = (JSONWebTokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = UserUpdatePasswordSerializer(data={
+            'password': request.data.get('password'),
+            'new_password': request.data.get('new_password')
+        })
+        serializer.is_valid(raise_exception=True)
+        if instance.check_password(serializer.data.get('password')):
+            instance.set_password(serializer.data.get('new_password'))
+            instance.save()
+            return Response({"status": True})
+        return Response({"status": False})
 
     def get_object(self):
         return self.request.user

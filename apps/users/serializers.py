@@ -45,3 +45,16 @@ class UserRegSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class UserUpdatePasswordSerializer(serializers.Serializer):
+    """
+    用户更新密码
+    """
+    # 输入密码的时候不显示明文
+    password = serializers.CharField(
+        style={'input_type': 'password'}, label="旧密码"
+    )
+    new_password = serializers.CharField(
+        style={'input_type': 'password'}, label="新密码"
+    )
