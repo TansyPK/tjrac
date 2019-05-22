@@ -1,6 +1,6 @@
 import xadmin
 
-from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions
+from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions, ContentQuestion, ContentAnswers
 
 
 class SelectAnswersAdmin(object):
@@ -37,3 +37,21 @@ class NormalQuestionsAdmin(object):
 
 
 xadmin.site.register(NormalQuestions, NormalQuestionsAdmin)
+
+
+class ContentQuestionAdmin(object):
+    list_display = ['id', 'content', 'type', 'title']
+    search_fields = ['id', 'content', 'type', 'title']
+    list_filter = ['id', 'content', 'type', 'title']
+
+
+xadmin.site.register(ContentQuestion, ContentQuestionAdmin)
+
+
+class ContentAnswersAdmin(object):
+    list_display = ['id', 'owner', 'question_id', 'content']
+    search_fields = ['id', 'owner', 'question_id', 'content']
+    list_filter = ['id', 'owner', 'question_id', 'content']
+
+
+xadmin.site.register(ContentAnswers, ContentAnswersAdmin)

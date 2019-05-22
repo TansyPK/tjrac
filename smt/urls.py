@@ -20,7 +20,8 @@ from apps.users.views import UserCreateViewSet, UserDetailViewSet, UsersDetailBy
     UserPasswordUpdateViewSet, UserToSmallTeacherViewSet
 from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet, \
     SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet, \
-    NormalQuestionsDetailViewSet, NormalQuestionsDetailByIdViewSet
+    NormalQuestionsDetailViewSet, NormalQuestionsDetailByIdViewSet, ContentQuestionsDetailViewSet, \
+    ContentAnswerCreateViewSet, ContentQuestionsDetailByIDViewSet
 from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet, \
@@ -53,6 +54,9 @@ urlpatterns = [
     path('create/select/comment/', SelectCommentOperationsCreateViewSet.as_view()),  # 创建选择评论接口
     re_path('^list/select/comment/$', SelectCommentOperationsDetailViewSet.as_view()),  # 选择题评论列表
     re_path('^list/select/questions/$', SelectQuestionsDetailViewSet.as_view()),  # 闯关选择题
+    re_path('^list/content/questions/$', ContentQuestionsDetailViewSet.as_view()),  # 文本题列表接口
+    re_path('^create/content/answer/$', ContentAnswerCreateViewSet.as_view()),  # 文本题回答接口
+    re_path('^list/content/question/$', ContentQuestionsDetailByIDViewSet.as_view()),  # 文本题单个问题接口
     # re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答（已集成至获取问题接口）
     re_path('^create/select/operation/$', SelectOperationCreateViewSet.as_view()),  # 闯关记录接口
     re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),  # 闯关记录列表接口

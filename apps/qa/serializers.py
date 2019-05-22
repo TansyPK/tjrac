@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from qa.models import SelectQuestions, NormalQuestions, SelectAnswers, NormalAnswers
+from qa.models import SelectQuestions, NormalQuestions, SelectAnswers, NormalAnswers, ContentAnswers, ContentQuestion
 
 
 class SelectQuestionSerializer(serializers.ModelSerializer):
@@ -134,3 +134,52 @@ class NormalAnswerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = NormalAnswers
         fields = '__all__'
+
+
+class ContentAnswerSerializer(serializers.ModelSerializer):
+    owner = serializers.IntegerField(label="回答者id", help_text="回答者id", required=True)
+    question_id = serializers.IntegerField(label="question_id", help_text="question_id", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+    class Meta:
+        model = ContentAnswers
+        fields = '__all__'
+
+
+class ContentQuestionSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
+    analyzations = serializers.CharField(label="问题解析", help_text="问题解析", required=True)
+    score = serializers.IntegerField(label="问题奖励分数", help_text="奖励分数", required=True)
+    level = serializers.IntegerField(label="问题等级", help_text="问题权重", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+    class Meta:
+        model = ContentQuestion
+        fields = '__all__'
+
+
+class ContentQuestionDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField(label="id", help_text="id", required=True)
+    title = serializers.CharField(label="标题", help_text="选择题标题", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    type = serializers.IntegerField(label="类型", help_text="问题类型", required=True)
+    analyzations = serializers.CharField(label="问题解析", help_text="问题解析", required=True, allow_blank=True)
+    score = serializers.IntegerField(label="问题奖励分数", help_text="奖励分数", required=True)
+    level = serializers.IntegerField(label="问题等级", help_text="问题权重", required=True)
+    answers = serializers.ListField(label="回答列表", help_text="回答列表", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+
+class ContentAnswerDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField(label="id", help_text="id", required=True)
+    owner_name = serializers.CharField(label="回答者姓名", help_text="回答者姓名", required=True)
+    question_id = serializers.IntegerField(label="question_id", help_text="question_id", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)

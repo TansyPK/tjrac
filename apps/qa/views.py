@@ -4,13 +4,14 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 
 from operations.serializers import NormalOperationsSerializers
-from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions
+from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions, ContentQuestion, ContentAnswers
 from users.models import UserProfile
 from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, \
     NormalAnswerSerializer, \
     SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, \
     NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer, NormalAnswersDetailSerializer, \
-    SelectAnswersDetailSerializer
+    SelectAnswersDetailSerializer, ContentQuestionDetailSerializer, ContentAnswerDetailSerializer, \
+    ContentAnswerSerializer, ContentQuestionSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -94,8 +95,9 @@ class NormalAnswerCreateViewSet(generics.CreateAPIView):
         }
         serializer_two = NormalOperationsSerializers(data=operation)
         serializer_two.is_valid(raise_exception=True)
+
         user = UserProfile.objects.get(id=request.user.id)
-        user.score += 5
+        user.score += 10
         user.save()
         serializer_two.save()
 
@@ -290,3 +292,89 @@ class NormalAnswersDetailViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         return NormalQuestions.objects.filter(id=self.request.GET.get('question_id'))
+
+
+class ContentAnswerCreateViewSet(generics.CreateAPIView):
+    """
+    普通文本题答案创建
+    """
+    serializer_class = ContentAnswerSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def create(self, request, *args, **kwargs):
+        serializer = ContentAnswerSerializer(data={
+            "owner": request.user.id,
+            "question_id": int(request.data.get('question_id')),
+            "content": request.data.get('content'),
+            "created_time": None,
+            "updated_time": None
+        })
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        user = UserProfile.objects.get(id=request.user.id)
+        user.score += 10
+        user.save()
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ContentQuestionsDetailViewSet(generics.ListAPIView):
+    """
+    文本问题列表(type获取)
+    """
+    serializer_class = ContentQuestionSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def get_queryset(self):
+        return ContentQuestion.objects.filter(type=self.request.GET.get('type'))
+
+
+class ContentQuestionsDetailByIDViewSet(generics.ListAPIView):
+    """
+    文本问题列表(question_id获取)
+    """
+    serializer_class = ContentQuestionDetailSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def list(self, request, *args, **kwargs):
+        res = []
+        queryset = self.filter_queryset(self.get_queryset())
+        for i in queryset:
+            answers = []
+            for j in ContentAnswers.objects.filter(question_id=i.id):
+                user = UserProfile.objects.get(id=j.owner)
+                answer_serializer = ContentAnswerDetailSerializer(data={
+                    "id": j.id,
+                    "owner_name": user.username,
+                    "question_id": j.question_id,
+                    "content": j.content,
+                    "created_time": j.created_time,
+                    "updated_time": j.updated_time
+                })
+                answer_serializer.is_valid(raise_exception=True)
+                answers.append(answer_serializer.data)
+            serializer = ContentQuestionDetailSerializer(data={
+                "id": i.id,
+                "title": i.title,
+                "content": i.content,
+                "type": i.type,
+                "analyzations": i.analyzations,
+                "score": i.score,
+                "level": i.level,
+                "answers": answers,
+                "created_time": i.created_time,
+                "updated_time": i.updated_time
+            })
+            serializer.is_valid(raise_exception=True)
+            res.append(serializer.data)
+        queryset = res
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(res)
+
+    def get_queryset(self):
+        return ContentQuestion.objects.filter(id=self.request.GET.get('question_id'))
