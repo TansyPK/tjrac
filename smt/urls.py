@@ -21,7 +21,7 @@ from apps.users.views import UserCreateViewSet, UserDetailViewSet, UsersDetailBy
 from apps.qa.views import NormalQuestionCreateViewSet, SelectQuestionCreateViewSet, NormalAnswerCreateViewSet, \
     SelectAnswerCreateViewSet, SelectQuestionsDetailViewSet, SelectAnswersDetailViewSet, NormalAnswersDetailViewSet, \
     NormalQuestionsDetailViewSet, NormalQuestionsDetailByIdViewSet, ContentQuestionsDetailViewSet, \
-    ContentAnswerCreateViewSet, ContentQuestionsDetailByIDViewSet
+    ContentAnswerCreateViewSet, ContentQuestionsDetailByIDViewSet, QuestionNoteCreateViewSet, QuestionNoteDetaiViewSet
 from apps.operations.views import SelectOperationCreateViewSet, \
     SelectOperationDetailViewSet, NormalOperationDetailViewSet, SelectTeacherOperationCreateViewSet, \
     SelectTeacherOperationsDetailViewSet, SelectCommentOperationsCreateViewSet, SelectCommentOperationsDetailViewSet, \
@@ -60,6 +60,8 @@ urlpatterns = [
     # re_path('^list/select/answers/$', SelectAnswersDetailViewSet.as_view()),  # 闯关选择题回答（已集成至获取问题接口）
     re_path('^create/select/operation/$', SelectOperationCreateViewSet.as_view()),  # 闯关记录接口
     re_path('^list/select/operations/$', SelectOperationDetailViewSet.as_view()),  # 闯关记录列表接口
+    re_path('^create/select/note/$', QuestionNoteCreateViewSet.as_view()),  # 创建笔记接口
+    re_path('^retrieve/select/note/$', QuestionNoteDetaiViewSet.as_view()),  # 获取笔记接口
 
     # 邀约讲解
     path('create/information/', InformationsCreateViewSet.as_view()),  # 创建邀约讲解

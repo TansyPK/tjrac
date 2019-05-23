@@ -4,14 +4,15 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import generics
 
 from operations.serializers import NormalOperationsSerializers
-from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions, ContentQuestion, ContentAnswers
+from qa.models import SelectAnswers, SelectQuestions, NormalAnswers, NormalQuestions, ContentQuestion, ContentAnswers, \
+    QuestionNote
 from users.models import UserProfile
 from qa.serializers import SelectQuestionSerializer, NormalQuestionSerializer, SelectAnswerSerializer, \
     NormalAnswerSerializer, \
     SelectAnswerDetailSerializer, SelectQuestionDetailSerializer, NormalAnswerDetailSerializer, \
     NormalQuestionDetailSerializer, NormalQuestionDetailByIdSerializer, NormalAnswersDetailSerializer, \
     SelectAnswersDetailSerializer, ContentQuestionDetailSerializer, ContentAnswerDetailSerializer, \
-    ContentAnswerSerializer, ContentQuestionSerializer
+    ContentAnswerSerializer, ContentQuestionSerializer, QuestionNoteSerializer, QuestionNoteDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -378,3 +379,48 @@ class ContentQuestionsDetailByIDViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         return ContentQuestion.objects.filter(id=self.request.GET.get('question_id'))
+
+
+class QuestionNoteCreateViewSet(generics.CreateAPIView):
+    """
+    笔记创建
+    """
+    serializer_class = QuestionNoteSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def create(self, request, *args, **kwargs):
+        serializer = QuestionNoteSerializer(data={
+            "owner": request.user.id,
+            "question_id": int(request.data.get('question_id')),
+            "content": request.data.get('content'),
+            "created_time": None,
+            "updated_time": None
+        })
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            question_note = QuestionNote.objects.get(question_id=serializer.validated_data.get('question_id'), owner=serializer.validated_data.get('owner'))
+        except Exception as e:
+            question_note = None
+
+        if question_note:
+            question_note.content = serializer.data.get('content')
+            question_note.save()
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        self.perform_create(serializer)
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class QuestionNoteDetaiViewSet(generics.RetrieveAPIView):
+    """
+    笔记获取(question_id获取)
+    """
+    serializer_class = QuestionNoteDetailSerializer
+    # authentication_classes = (JSONWebTokenAuthentication, )
+
+    def get_object(self):
+        return QuestionNote.objects.get(question_id=self.request.GET.get('question_id'), owner=self.request.user.id)

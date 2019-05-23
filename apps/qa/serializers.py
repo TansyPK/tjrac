@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from qa.models import SelectQuestions, NormalQuestions, SelectAnswers, NormalAnswers, ContentAnswers, ContentQuestion
+from qa.models import SelectQuestions, NormalQuestions, SelectAnswers, NormalAnswers, ContentAnswers, ContentQuestion, \
+    QuestionNote
 
 
 class SelectQuestionSerializer(serializers.ModelSerializer):
@@ -179,6 +180,27 @@ class ContentQuestionDetailSerializer(serializers.Serializer):
 class ContentAnswerDetailSerializer(serializers.Serializer):
     id = serializers.IntegerField(label="id", help_text="id", required=True)
     owner_name = serializers.CharField(label="回答者姓名", help_text="回答者姓名", required=True)
+    question_id = serializers.IntegerField(label="question_id", help_text="question_id", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+
+class QuestionNoteSerializer(serializers.ModelSerializer):
+    owner = serializers.IntegerField(label="用户id", help_text="用户id", required=True)
+    question_id = serializers.IntegerField(label="question_id", help_text="question_id", required=True)
+    content = serializers.CharField(label="内容", help_text="问题内容", required=True)
+    created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)
+    updated_time = serializers.DateTimeField(label="更新时间", help_text="更新时间", allow_null=True)
+
+    class Meta:
+        model = QuestionNote
+        fields = '__all__'
+
+
+class QuestionNoteDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField(label="id", help_text="id", required=True)
+    owner = serializers.IntegerField(label="用户id", help_text="用户id", required=True)
     question_id = serializers.IntegerField(label="question_id", help_text="question_id", required=True)
     content = serializers.CharField(label="内容", help_text="问题内容", required=True)
     created_time = serializers.DateTimeField(label="创建时间", help_text="创建时间", allow_null=True)

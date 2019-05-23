@@ -65,3 +65,11 @@ class ContentAnswers(models.Model):
     content = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+
+class QuestionNote(models.Model):
+    owner = models.IntegerField()
+    question_id = models.IntegerField()
+    content = models.TextField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
