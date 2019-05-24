@@ -44,8 +44,8 @@ class UserDetailViewSet(generics.RetrieveAPIView):
 
 class UsersDetailByTypeViewSet(generics.ListAPIView):
     serializer_class = UserDetailSerializer
-    # authentication_classes = (JSONWebTokenAuthentication,)
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return User.objects.filter(type=self.request.GET.get('type')).order_by('-score')
