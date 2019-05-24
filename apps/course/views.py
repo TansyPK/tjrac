@@ -26,7 +26,7 @@ class CourseCreateViewSet(generics.CreateAPIView):
             "content": request.data.get('content'),
             "room": int(request.data.get('room')) if request.data.get('room') else 0,
             "score": int(request.data.get('score')) if request.data.get('score') else 0,
-            "status": int(request.data.get('status')) if request.data.get('status') else 0,
+            "status": int(request.data.get('status')) if request.data.get('status') else 1,
             "type": int(request.data.get('type')) if request.data.get('type') else 0,
             "interview_time": request.data.get('interview_time'),
             "end_time": request.data.get('end_time'),
