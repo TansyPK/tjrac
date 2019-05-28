@@ -20,6 +20,13 @@ class Course(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "小老师课程"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
 
 class CourseCategory(models.Model):
     """
@@ -27,6 +34,13 @@ class CourseCategory(models.Model):
     """
     type = models.IntegerField()
     type_name = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = "小老师课程类别"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
 
 
 class CourseFeedBack(models.Model):
@@ -42,3 +56,10 @@ class CourseFeedBack(models.Model):
     status = models.IntegerField()
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "小老师课程反馈"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username

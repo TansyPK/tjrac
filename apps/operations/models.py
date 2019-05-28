@@ -9,12 +9,26 @@ class SelectOperations(models.Model):
     score = models.IntegerField(blank=True, default=0)
     is_correct = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = "闯关记录"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
 
 class NormalOperations(models.Model):
     question_id = models.IntegerField()
     answer_id = models.IntegerField()
     user_id = models.IntegerField()
     score = models.IntegerField(blank=True, default=0)
+
+    class Meta:
+        verbose_name = "讨论区记录"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
 
 
 class SelectTeacherOperations(models.Model):
@@ -28,6 +42,13 @@ class SelectTeacherOperations(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "预约操作"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
 
 class SelectCommentOperations(models.Model):
     question_id = models.IntegerField()
@@ -35,3 +56,10 @@ class SelectCommentOperations(models.Model):
     content = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "评论操作"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username

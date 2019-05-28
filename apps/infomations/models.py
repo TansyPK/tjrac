@@ -12,6 +12,13 @@ class Information(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "邀约讲解"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
 
 class InformationComment(models.Model):
     owner = models.IntegerField()
@@ -19,3 +26,10 @@ class InformationComment(models.Model):
     content = models.CharField(max_length=100)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "邀约讲解评论"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
