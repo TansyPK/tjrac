@@ -25,7 +25,7 @@ class Course(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.username
+        return self.title
 
 
 class CourseCategory(models.Model):
@@ -40,7 +40,7 @@ class CourseCategory(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.username
+        return self.type_name
 
 
 class CourseFeedBack(models.Model):
@@ -61,5 +61,3 @@ class CourseFeedBack(models.Model):
         verbose_name = "小老师课程反馈"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username

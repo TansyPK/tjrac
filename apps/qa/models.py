@@ -21,9 +21,6 @@ class SelectQuestions(models.Model):
         verbose_name = "闯关选择题"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class SelectAnswers(models.Model):
     """
@@ -40,9 +37,6 @@ class SelectAnswers(models.Model):
         verbose_name = "闯关选择题回答"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class NormalQuestions(models.Model):
     owner = models.IntegerField()
@@ -57,9 +51,6 @@ class NormalQuestions(models.Model):
         verbose_name = "讨论区问题"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class NormalAnswers(models.Model):
     owner = models.IntegerField()
@@ -71,9 +62,6 @@ class NormalAnswers(models.Model):
     class Meta:
         verbose_name = "讨论区回答"
         verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.username
 
 
 class ContentQuestion(models.Model):
@@ -90,9 +78,6 @@ class ContentQuestion(models.Model):
         verbose_name = "文本题问题"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class ContentAnswers(models.Model):
     owner = models.IntegerField()
@@ -105,9 +90,6 @@ class ContentAnswers(models.Model):
         verbose_name = "文本题回答"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class QuestionNote(models.Model):
     owner = models.IntegerField()
@@ -119,6 +101,3 @@ class QuestionNote(models.Model):
     class Meta:
         verbose_name = "选择题笔记"
         verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.username

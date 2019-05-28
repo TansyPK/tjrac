@@ -16,9 +16,6 @@ class Information(models.Model):
         verbose_name = "邀约讲解"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class InformationComment(models.Model):
     owner = models.IntegerField()
@@ -30,6 +27,3 @@ class InformationComment(models.Model):
     class Meta:
         verbose_name = "邀约讲解评论"
         verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.username

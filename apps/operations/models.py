@@ -13,9 +13,6 @@ class SelectOperations(models.Model):
         verbose_name = "闯关记录"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class NormalOperations(models.Model):
     question_id = models.IntegerField()
@@ -26,9 +23,6 @@ class NormalOperations(models.Model):
     class Meta:
         verbose_name = "讨论区记录"
         verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.username
 
 
 class SelectTeacherOperations(models.Model):
@@ -46,9 +40,6 @@ class SelectTeacherOperations(models.Model):
         verbose_name = "预约操作"
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return self.username
-
 
 class SelectCommentOperations(models.Model):
     question_id = models.IntegerField()
@@ -60,6 +51,3 @@ class SelectCommentOperations(models.Model):
     class Meta:
         verbose_name = "评论操作"
         verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.username
