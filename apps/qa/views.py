@@ -157,7 +157,7 @@ class SelectQuestionsDetailViewSet(generics.ListAPIView):
         return Response(res)
 
     def get_queryset(self):
-        return SelectQuestions.objects.filter(type=self.request.GET.get('type'))
+        return SelectQuestions.objects.filter(type=self.request.GET.get('type')).order_by("-pk")
 
 
 class SelectAnswersDetailViewSet(generics.ListAPIView):
@@ -215,7 +215,7 @@ class NormalQuestionsDetailViewSet(generics.ListAPIView):
         return Response(res)
 
     def get_queryset(self):
-        return NormalQuestions.objects.all()
+        return NormalQuestions.objects.all().order_by("-pk")
 
 
 class NormalQuestionsDetailByIdViewSet(generics.ListAPIView):
